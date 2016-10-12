@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/ytanigaw/.local/bin/poretools", line 9, in <module>
+    load_entry_point('poretools==0.6.0', 'console_scripts', 'poretools')()
+  File "/home/ytanigaw/.local/lib/python2.7/site-packages/poretools-0.6.0-py2.7.egg/poretools/poretools_main.py", line 533, in main
+    args.func(parser, args)
+  File "/home/ytanigaw/.local/lib/python2.7/site-packages/poretools-0.6.0-py2.7.egg/poretools/poretools_main.py", line 55, in run_subtool
+    submodule.run(parser, args)
+  File "/home/ytanigaw/.local/lib/python2.7/site-packages/poretools-0.6.0-py2.7.egg/poretools/readstats.py", line 9, in run
+    start_time = fast5.get_start_time()
+  File "/home/ytanigaw/.local/lib/python2.7/site-packages/poretools-0.6.0-py2.7.egg/poretools/Fast5File.py", line 541, in get_start_time
+    node = self.find_event_timing_block()
+  File "/home/ytanigaw/.local/lib/python2.7/site-packages/poretools-0.6.0-py2.7.egg/poretools/Fast5File.py", line 507, in find_event_timing_block
+    path = fastq_paths[self.version]['template'] % (self.group)
+KeyError: 'template'
