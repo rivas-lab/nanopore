@@ -21,5 +21,5 @@
 #################
 
 lastdb -uNEAR -R01 \
-       /home/ytanigaw/data/hg19/hg19.lastdb \
-       /home/ytanigaw/data/hg19/*.fa
+       ${PI_HOME}/data/hg19/hg19.lastdb \
+       ${PI_HOME}/data/hg19/*.fa
