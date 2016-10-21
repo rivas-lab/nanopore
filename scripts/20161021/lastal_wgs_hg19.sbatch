@@ -26,4 +26,4 @@ lastal -Q1 -D100 \
        | \
        last-split \
 	   -c0 \
-	   ${HOME}/data/wgs-sample.maf
+	   > ${HOME}/data/wgs-sample.maf

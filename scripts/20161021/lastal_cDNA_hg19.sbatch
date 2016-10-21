@@ -17,13 +17,8 @@
 #SBATCH --nodes=1
 #################
 #memory per node; default is 4000 MB per CPU
-#SBATCH --mem=4000
+#SBATCH --mem=16000
 #################
-
-echo "cat ${PI_HOME}/data/hg19/hg19.lastdb.prj"
-echo "----------"
-cat ${PI_HOME}/data/hg19/hg19.lastdb.prj
-echo "----------"
 
 lastal -Q1 -D100 \
        ${PI_HOME}/data/hg19/hg19.lastdb \
@@ -31,4 +26,4 @@ lastal -Q1 -D100 \
        | \
        last-split \
 	   -c0 \
-	   ${HOME}/data/cDNA-sample.maf
+	   > ${HOME}/data/cDNA-sample.maf
