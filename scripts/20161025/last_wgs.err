@@ -1,0 +1,2 @@
+slurmstepd: error: Job 10431079 exceeded memory limit (16553404 > 16384000), being killed
+slurmstepd: error: *** JOB 10431079 ON sh-5-31 CANCELLED AT 2016-10-25T14:19:02 ***
