@@ -23,4 +23,4 @@
 data_head="${PI_HOME}/data/nanopore/20161008_wgs_caucasian_48hr"
 
 mkdir -p "${data_head}.fastqc"
-fastqc -o "${data_head}.fastqc" ${data_head}.fq
+java -Xms8g -Xmx16g -classpath /share/PI/mrivas/bin/FastQC/ uk.ac.babraham.FastQC.FastQCApplication -o "${data_head}.fastqc" ${data_head}.fq

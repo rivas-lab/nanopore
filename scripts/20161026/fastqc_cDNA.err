@@ -1,18 +1,13 @@
-Started analysis of 20161006_minion_human_cDNA.fq
-Approx 5% complete for 20161006_minion_human_cDNA.fq
-Approx 10% complete for 20161006_minion_human_cDNA.fq
-Approx 15% complete for 20161006_minion_human_cDNA.fq
-Approx 20% complete for 20161006_minion_human_cDNA.fq
-Approx 25% complete for 20161006_minion_human_cDNA.fq
-Approx 30% complete for 20161006_minion_human_cDNA.fq
-Approx 35% complete for 20161006_minion_human_cDNA.fq
-Approx 40% complete for 20161006_minion_human_cDNA.fq
-Exception in thread "Thread-1" java.lang.OutOfMemoryError: GC overhead limit exceeded
-	at java.util.Arrays.copyOfRange(Arrays.java:3664)
-	at java.lang.String.<init>(String.java:207)
-	at java.lang.String.substring(String.java:1969)
-	at uk.ac.babraham.FastQC.Modules.PerSequenceGCContent.truncateSequence(PerSequenceGCContent.java:218)
-	at uk.ac.babraham.FastQC.Modules.PerSequenceGCContent.processSequence(PerSequenceGCContent.java:174)
-	at uk.ac.babraham.FastQC.Analysis.AnalysisRunner.run(AnalysisRunner.java:88)
-	at java.lang.Thread.run(Thread.java:745)
-slurmstepd: error: *** JOB 10471865 ON sh-5-24 CANCELLED AT 2016-10-26T14:45:41 ***
+Skipping '-o' which didn't exist, or couldn't be read
+Exception in thread "main" java.lang.NoClassDefFoundError: org/itadaki/bzip2/BZip2InputStream
+	at uk.ac.babraham.FastQC.Sequence.SequenceFactory.getSequenceFile(SequenceFactory.java:106)
+	at uk.ac.babraham.FastQC.Sequence.SequenceFactory.getSequenceFile(SequenceFactory.java:62)
+	at uk.ac.babraham.FastQC.Analysis.OfflineRunner.processFile(OfflineRunner.java:129)
+	at uk.ac.babraham.FastQC.Analysis.OfflineRunner.<init>(OfflineRunner.java:102)
+	at uk.ac.babraham.FastQC.FastQCApplication.main(FastQCApplication.java:316)
+Caused by: java.lang.ClassNotFoundException: org.itadaki.bzip2.BZip2InputStream
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	... 5 more
