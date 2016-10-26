@@ -5,7 +5,7 @@
 #################
 #time you think you need; default is 2 hours
 #format could be dd-hh:mm:ss, hh:mm:ss, mm:ss, or mm
-#SBATCH --time=4:00:00
+#SBATCH --time=0:20:00
 #################
 #quality of service; think of it as job priority
 #SBATCH --qos=normal
@@ -15,12 +15,10 @@
 #################
 #number of nodes you are requesting
 #SBATCH --nodes=1
-#################
-#memory per node; default is 4000 MB per CPU
-#SBATCH --mem=16000
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=16
 #################
 
 data_head="${PI_HOME}/data/nanopore/20161008_wgs_caucasian_48hr"
-
 mkdir -p "${data_head}.fastqc"
-java -Xms8g -Xmx16g -classpath /share/PI/mrivas/bin/FastQC/ uk.ac.babraham.FastQC.FastQCApplication -o "${data_head}.fastqc" ${data_head}.fq
+fastqc -t 16 -o "${data_head}.fastqc" "${data_head}.fq"
