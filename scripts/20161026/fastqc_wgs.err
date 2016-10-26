@@ -1,0 +1,17 @@
+Started analysis of 20161008_wgs_caucasian_48hr.fq
+Approx 5% complete for 20161008_wgs_caucasian_48hr.fq
+Approx 10% complete for 20161008_wgs_caucasian_48hr.fq
+Approx 15% complete for 20161008_wgs_caucasian_48hr.fq
+Exception in thread "Thread-1" java.lang.OutOfMemoryError: GC overhead limit exceeded
+	at java.util.Arrays.copyOf(Arrays.java:3332)
+	at java.lang.AbstractStringBuilder.expandCapacity(AbstractStringBuilder.java:137)
+	at java.lang.AbstractStringBuilder.ensureCapacityInternal(AbstractStringBuilder.java:121)
+	at java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:569)
+	at java.lang.StringBuffer.append(StringBuffer.java:369)
+	at java.io.BufferedReader.readLine(BufferedReader.java:358)
+	at java.io.BufferedReader.readLine(BufferedReader.java:389)
+	at uk.ac.babraham.FastQC.Sequence.FastQFile.readNext(FastQFile.java:166)
+	at uk.ac.babraham.FastQC.Sequence.FastQFile.next(FastQFile.java:125)
+	at uk.ac.babraham.FastQC.Analysis.AnalysisRunner.run(AnalysisRunner.java:76)
+	at java.lang.Thread.run(Thread.java:745)
+slurmstepd: error: *** JOB 10471866 ON sh-5-24 CANCELLED AT 2016-10-26T14:45:48 ***

@@ -1,0 +1,18 @@
+Started analysis of 20161006_minion_human_cDNA.fq
+Approx 5% complete for 20161006_minion_human_cDNA.fq
+Approx 10% complete for 20161006_minion_human_cDNA.fq
+Approx 15% complete for 20161006_minion_human_cDNA.fq
+Approx 20% complete for 20161006_minion_human_cDNA.fq
+Approx 25% complete for 20161006_minion_human_cDNA.fq
+Approx 30% complete for 20161006_minion_human_cDNA.fq
+Approx 35% complete for 20161006_minion_human_cDNA.fq
+Approx 40% complete for 20161006_minion_human_cDNA.fq
+Exception in thread "Thread-1" java.lang.OutOfMemoryError: GC overhead limit exceeded
+	at java.util.Arrays.copyOfRange(Arrays.java:3664)
+	at java.lang.String.<init>(String.java:207)
+	at java.lang.String.substring(String.java:1969)
+	at uk.ac.babraham.FastQC.Modules.PerSequenceGCContent.truncateSequence(PerSequenceGCContent.java:218)
+	at uk.ac.babraham.FastQC.Modules.PerSequenceGCContent.processSequence(PerSequenceGCContent.java:174)
+	at uk.ac.babraham.FastQC.Analysis.AnalysisRunner.run(AnalysisRunner.java:88)
+	at java.lang.Thread.run(Thread.java:745)
+slurmstepd: error: *** JOB 10471865 ON sh-5-24 CANCELLED AT 2016-10-26T14:45:41 ***
