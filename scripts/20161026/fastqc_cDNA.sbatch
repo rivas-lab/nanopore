@@ -21,4 +21,4 @@
 
 data_head="${PI_HOME}/data/nanopore/20161006_minion_human_cDNA"
 mkdir -p "${data_head}.fastqc"
-fastqc --nano -t 16 -o "${data_head}.fastqc" "${data_head}/"
+fastqc -t 16 -o "${data_head}.fastqc" "${data_head}.fq"
