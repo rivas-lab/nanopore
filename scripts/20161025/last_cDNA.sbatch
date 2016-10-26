@@ -17,15 +17,15 @@
 #SBATCH --nodes=1
 #################
 #memory per node; default is 4000 MB per CPU
-#SBATCH --mem=16000
+#SBATCH --mem=64000
 #################
 
 data_head="${PI_HOME}/data/nanopore/20161006_minion_human_cDNA"
 
-ml load python/2.7.5
-ml load hdf5/1.8.16
+#ml load python/2.7.5
+#ml load hdf5/1.8.16
 
-poretools fastq ${data_head} > ${data_head}.fq
+#poretools fastq ${data_head} > ${data_head}.fq
 	  
 lastal -Q1 -D100 \
        ${PI_HOME}/data/hg19/hg19.lastdb \
