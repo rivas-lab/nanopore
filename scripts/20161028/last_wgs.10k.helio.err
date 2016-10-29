@@ -1,5 +1,1 @@
-slurmstepd: error: *** JOB 10514306 ON sh-3-27 CANCELLED AT 2016-10-28T17:56:27 DUE TO TIME LIMIT ***
-slurmstepd: error: Exceeded step memory limit at some point.
-slurmstepd: error: *** JOB 10514313 ON sh-5-19 CANCELLED AT 2016-10-28T17:58:46 DUE TO TIME LIMIT ***
-slurmstepd: error: Exceeded step memory limit at some point.
-slurmstepd: error: Exceeded job memory limit at some point.
+slurmstepd: error: *** JOB 10515063 ON sh-5-15 CANCELLED AT 2016-10-28T19:03:59 ***
