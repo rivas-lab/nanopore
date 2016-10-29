@@ -100,6 +100,7 @@ def count_main(maf_file, out_file, debug):
     strs.append('\t'.join(['match', 'mismatch', 'insertion', 'deletion',
                            'ref_name', 'ref_start', 'ref_alnSize', 'ref_strand', 'ref_seqSize',
                            'tar_name', 'tar_start', 'tar_alnSize', 'tar_strand', 'tar_seqSize']))
+
     for l in maf_file:
         if((not l.startswith('#')) and len(l.strip()) > 0):
             if(l.startswith('a')):
@@ -124,7 +125,8 @@ def main():
     # This function serves as a parser
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                      description=_README_)
-    parser.add_argument('i', metavar='i', type=argparse.FileType('r'),
+    parser.add_argument('-i', metavar='i', type=argparse.FileType('r'),
+                        #default = None,
                         help='input file (maf format)')
     parser.add_argument('-o', metavar='o', # type=argparse.FileType('w'),
                         default = None, 

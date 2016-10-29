@@ -17,7 +17,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=7500M
+#SBATCH --mem-per-cpu=15G
 #################
 
 data_head="${PI_HOME}/data/nanopore/20161008_wgs_caucasian_48hr"
