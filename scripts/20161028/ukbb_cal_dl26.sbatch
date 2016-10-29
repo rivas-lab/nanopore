@@ -4,7 +4,7 @@
 #SBATCH    --error=ukbb_cal26.err
 #################
 #format could be dd-hh:mm:ss, hh:mm:ss, mm:ss, or mm
-#SBATCH --time=2:00:00
+#SBATCH --time=2-0:00:00
 #################
 #quality of service; think of it as job priority
 #SBATCH --qos=normal
