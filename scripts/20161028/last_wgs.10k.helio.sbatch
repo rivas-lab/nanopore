@@ -21,7 +21,10 @@
 #################
 
 data_head="${PI_HOME}/data/nanopore/20161008_wgs_caucasian_48hr"
-	  
-lastal -P16 -Q1 -D100 -s2 -T0 -a1 \
-       ${PI_HOME}/data/hg19/hg19.lastdb \
-       ${data_head}.10k.fq | last-split -c0  > ${data_head}.10k.helio.maf
+
+parallel-fastq "-j 16 lastal -Q1 -D100 -s2 -T0 -a1 ${PI_HOME}/data/hg19/hg19.lastdb | last-split -c0" \
+	       < ${data_head}.10k.fq > ${data_head}.10k.helio.maf
+
+#lastal -P16 -Q1 -D100 -s2 -T0 -a1 \
+#       ${PI_HOME}/data/hg19/hg19.lastdb \
+#       ${data_head}.10k.fq | last-split -c0  > ${data_head}.10k.helio.maf
