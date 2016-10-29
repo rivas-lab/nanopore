@@ -1,3 +1,3 @@
-slurmstepd: error: Job 10515396 exceeded memory limit (64459272 > 62914560), being killed
-slurmstepd: error: Exceeded job memory limit
-slurmstepd: error: *** JOB 10515396 ON sh-2-14 CANCELLED AT 2016-10-28T20:20:48 ***
+/var/spool/slurmd/job10515493/slurm_script: line 27: 21049 Broken pipe             lastal -Q1 -D100 -s2 -T0 -a1 ${PI_HOME}/data/hg19/hg19.lastdb ${data_head}.10k.fq
+     21050 Killed                  | last-split -c0 > ${data_head}.10k.helio.maf
+slurmstepd: error: Exceeded step memory limit at some point.
