@@ -113,8 +113,12 @@ def count_main(maf_file, out_file, debug):
                 entry.add_field(splitted_line[0], ' '.join(splitted_line[1:]))
     if(entry != None):
         strs.append('\t'.join([str(x) for x in entry.count(ref_id=0, tar_id=1)]))
-    
-    out_file.write('\n'.join(strs))
+
+    if(out_file != None):
+        with open(out_file, 'w') as f:
+            f.write('\n'.join(strs))
+    else:
+        print('\n'.join(strs))
 
 def main():
     # This function serves as a parser
@@ -122,9 +126,9 @@ def main():
                                      description=_README_)
     parser.add_argument('i', metavar='i', type=argparse.FileType('r'),
                         help='input file (maf format)')
-    parser.add_argument('-o', metavar='o', type=argparse.FileType('w'),
-                        default = './count.out', 
-                        help='output file name (default = ./count.out)')
+    parser.add_argument('-o', metavar='o', # type=argparse.FileType('w'),
+                        default = None, 
+                        help='output file name (default = stdout)')
     parser.add_argument('--debug', action = 'store_const',
                         const=True, default = False,
                         help='debug mode (***)')
