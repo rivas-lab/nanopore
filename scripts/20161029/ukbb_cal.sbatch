@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=ukbb_cal3-7
-#SBATCH   --output=ukbb_cal3-7.out
-#SBATCH    --error=ukbb_cal3-7.err
+#SBATCH --job-name=ukbb_cal
+#SBATCH   --output=ukbb_cal.out
+#SBATCH    --error=ukbb_cal.err
 #################
 #format could be dd-hh:mm:ss, hh:mm:ss, mm:ss, or mm
 #SBATCH --time=2-0:00:00
@@ -23,7 +23,7 @@
 DIR=${PI_HOME}/ukbb/download
 cd ${DIR}
 
-for CHR in 3 4 5 6 7 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 26
+for CHR in 1 2 3 4 5 6 7 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 26
 do
     echo "${CHR}------------------------------------------"
     ./gfetch cal ${CHR} -ak1669.ukbkey
