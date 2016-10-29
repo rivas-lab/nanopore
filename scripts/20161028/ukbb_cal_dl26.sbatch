@@ -25,7 +25,7 @@ DIR=${PI_HOME}/ukbb/download
 CHR=26
 
 cd ${DIR}
-./gfetch cal ${CHR} -ak1669.ukbkey
+./gfetch cal ${CHR} -ak1669.ukbkey -rchromMT.cal
 
 
 # # Reference:
