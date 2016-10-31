@@ -1,0 +1,20 @@
+
+UKBiobank GFETCH
+Compiled May 20 2015 15:17:53.
+Setting output datafile to "chrom10.cal"
+Querying remote inventory for chromosome 10, datatype cal
+4765584 bytes fetched
+Download has been logged against IP address 171.67.92.83
+
+SESSION 12162263 assigned to this request
+
+Identified 152729 person-datasets to retrieve
+Parsing remote worklist........
+Targetting 152729 records, 6.1GB (1.8 compressed)
+Fetching data into file "chrom10.cal"
+........................................ done 40000, 2hr 59min remaining
+........................................ done 80000, 1hr 39min remaining
+........................................ done 120000, 34min remaining
+................................
+Wrote 152729 items (6.1GB) to chrom10.cal in 8617 secs
+Finished 
