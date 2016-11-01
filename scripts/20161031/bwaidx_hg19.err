@@ -33,3 +33,11 @@
 [BWTIncConstructFromPacked] 300 iterations done. 3000000000 characters processed.
 [BWTIncConstructFromPacked] 310 iterations done. 3100000000 characters processed.
 [BWTIncConstructFromPacked] 320 iterations done. 3200000000 characters processed.
+[BWTIncConstructFromPacked] 330 iterations done. 3300000000 characters processed.
+[BWTIncConstructFromPacked] 340 iterations done. 3400000000 characters processed.
+[BWTIncConstructFromPacked] 350 iterations done. 3500000000 characters processed.
+[BWTIncConstructFromPacked] 360 iterations done. 3600000000 characters processed.
+[BWTIncConstructFromPacked] 370 iterations done. 3700000000 characters processed.
+[BWTIncConstructFromPacked] 380 iterations done. 3800000000 characters processed.
+[BWTIncConstructFromPacked] 390 iterations done. 3900000000 characters processed.
+slurmstepd: error: *** JOB 10566354 ON sh-5-24 CANCELLED AT 2016-10-31T19:13:42 DUE TO TIME LIMIT ***
