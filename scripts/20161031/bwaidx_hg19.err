@@ -1,18 +1,35 @@
-[bwa_index] Pack FASTA... 1.08 sec
+[bwa_index] Pack FASTA... 26.65 sec
 [bwa_index] Construct BWT for the packed sequence...
-[BWTIncCreate] textLength=271069494, availableWord=31073416
-[BWTIncConstructFromPacked] 10 iterations done. 51257046 characters processed.
-[BWTIncConstructFromPacked] 20 iterations done. 94693398 characters processed.
-[BWTIncConstructFromPacked] 30 iterations done. 133295718 characters processed.
-[BWTIncConstructFromPacked] 40 iterations done. 167601542 characters processed.
-[BWTIncConstructFromPacked] 50 iterations done. 198088598 characters processed.
-[BWTIncConstructFromPacked] 60 iterations done. 225181558 characters processed.
-[BWTIncConstructFromPacked] 70 iterations done. 249257782 characters processed.
-[BWTIncConstructFromPacked] 80 iterations done. 270652774 characters processed.
-[bwa_index] 77.69 seconds elapse.
-[bwa_index] Update BWT... 0.81 sec
-[bwa_index] Pack forward-only FASTA... 0.68 sec
-[bwa_index] Construct SA from BWT and Occ... 29.27 sec
-[main] Version: 0.7.15-r1140
-[main] CMD: bwa index /share/PI/mrivas/data/hg19/chr10.fa /share/PI/mrivas/data/hg19/chr11.fa /share/PI/mrivas/data/hg19/chr11_gl000202_random.fa /share/PI/mrivas/data/hg19/chr12.fa /share/PI/mrivas/data/hg19/chr13.fa /share/PI/mrivas/data/hg19/chr14.fa /share/PI/mrivas/data/hg19/chr15.fa /share/PI/mrivas/data/hg19/chr16.fa /share/PI/mrivas/data/hg19/chr17_ctg5_hap1.fa /share/PI/mrivas/data/hg19/chr17.fa /share/PI/mrivas/data/hg19/chr17_gl000203_random.fa /share/PI/mrivas/data/hg19/chr17_gl000204_random.fa /share/PI/mrivas/data/hg19/chr17_gl000205_random.fa /share/PI/mrivas/data/hg19/chr17_gl000206_random.fa /share/PI/mrivas/data/hg19/chr18.fa /share/PI/mrivas/data/hg19/chr18_gl000207_random.fa /share/PI/mrivas/data/hg19/chr19.fa /share/PI/mrivas/data/hg19/chr19_gl000208_random.fa /share/PI/mrivas/data/hg19/chr19_gl000209_random.fa /share/PI/mrivas/data/hg19/chr1.fa /share/PI/mrivas/data/hg19/chr1_gl000191_random.fa /share/PI/mrivas/data/hg19/chr1_gl000192_random.fa /share/PI/mrivas/data/hg19/chr20.fa /share/PI/mrivas/data/hg19/chr21.fa /share/PI/mrivas/data/hg19/chr21_gl000210_random.fa /share/PI/mrivas/data/hg19/chr22.fa /share/PI/mrivas/data/hg19/chr2.fa /share/PI/mrivas/data/hg19/chr3.fa /share/PI/mrivas/data/hg19/chr4_ctg9_hap1.fa /share/PI/mrivas/data/hg19/chr4.fa /share/PI/mrivas/data/hg19/chr4_gl000193_random.fa /share/PI/mrivas/data/hg19/chr4_gl000194_random.fa /share/PI/mrivas/data/hg19/chr5.fa /share/PI/mrivas/data/hg19/chr6_apd_hap1.fa /share/PI/mrivas/data/hg19/chr6_cox_hap2.fa /share/PI/mrivas/data/hg19/chr6_dbb_hap3.fa /share/PI/mrivas/data/hg19/chr6.fa /share/PI/mrivas/data/hg19/chr6_mann_hap4.fa /share/PI/mrivas/data/hg19/chr6_mcf_hap5.fa /share/PI/mrivas/data/hg19/chr6_qbl_hap6.fa /share/PI/mrivas/data/hg19/chr6_ssto_hap7.fa /share/PI/mrivas/data/hg19/chr7.fa /share/PI/mrivas/data/hg19/chr7_gl000195_random.fa /share/PI/mrivas/data/hg19/chr8.fa /share/PI/mrivas/data/hg19/chr8_gl000196_random.fa /share/PI/mrivas/data/hg19/chr8_gl000197_random.fa /share/PI/mrivas/data/hg19/chr9.fa /share/PI/mrivas/data/hg19/chr9_gl000198_random.fa /share/PI/mrivas/data/hg19/chr9_gl000199_random.fa /share/PI/mrivas/data/hg19/chr9_gl000200_random.fa /share/PI/mrivas/data/hg19/chr9_gl000201_random.fa /share/PI/mrivas/data/hg19/chrM.fa /share/PI/mrivas/data/hg19/chrUn_gl000211.fa /share/PI/mrivas/data/hg19/chrUn_gl000212.fa /share/PI/mrivas/data/hg19/chrUn_gl000213.fa /share/PI/mrivas/data/hg19/chrUn_gl000214.fa /share/PI/mrivas/data/hg19/chrUn_gl000215.fa /share/PI/mrivas/data/hg19/chrUn_gl000216.fa /share/PI/mrivas/data/hg19/chrUn_gl000217.fa /share/PI/mrivas/data/hg19/chrUn_gl000218.fa /share/PI/mrivas/data/hg19/chrUn_gl000219.fa /share/PI/mrivas/data/hg19/chrUn_gl000220.fa /share/PI/mrivas/data/hg19/chrUn_gl000221.fa /share/PI/mrivas/data/hg19/chrUn_gl000222.fa /share/PI/mrivas/data/hg19/chrUn_gl000223.fa /share/PI/mrivas/data/hg19/chrUn_gl000224.fa /share/PI/mrivas/data/hg19/chrUn_gl000225.fa /share/PI/mrivas/data/hg19/chrUn_gl000226.fa /share/PI/mrivas/data/hg19/chrUn_gl000227.fa /share/PI/mrivas/data/hg19/chrUn_gl000228.fa /share/PI/mrivas/data/hg19/chrUn_gl000229.fa /share/PI/mrivas/data/hg19/chrUn_gl000230.fa /share/PI/mrivas/data/hg19/chrUn_gl000231.fa /share/PI/mrivas/data/hg19/chrUn_gl000232.fa /share/PI/mrivas/data/hg19/chrUn_gl000233.fa /share/PI/mrivas/data/hg19/chrUn_gl000234.fa /share/PI/mrivas/data/hg19/chrUn_gl000235.fa /share/PI/mrivas/data/hg19/chrUn_gl000236.fa /share/PI/mrivas/data/hg19/chrUn_gl000237.fa /share/PI/mrivas/data/hg19/chrUn_gl000238.fa /share/PI/mrivas/data/hg19/chrUn_gl000239.fa /share/PI/mrivas/data/hg19/chrUn_gl000240.fa /share/PI/mrivas/data/hg19/chrUn_gl000241.fa /share/PI/mrivas/data/hg19/chrUn_gl000242.fa /share/PI/mrivas/data/hg19/chrUn_gl000243.fa /share/PI/mrivas/data/hg19/chrUn_gl000244.fa /share/PI/mrivas/data/hg19/chrUn_gl000245.fa /share/PI/mrivas/data/hg19/chrUn_gl000246.fa /share/PI/mrivas/data/hg19/chrUn_gl000247.fa /share/PI/mrivas/data/hg19/chrUn_gl000248.fa /share/PI/mrivas/data/hg19/chrUn_gl000249.fa /share/PI/mrivas/data/hg19/chrX.fa /share/PI/mrivas/data/hg19/chrY.fa
-[main] Real time: 117.066 sec; CPU: 109.541 sec
+[BWTIncCreate] textLength=6274322528, availableWord=453484340
+[BWTIncConstructFromPacked] 10 iterations done. 100000000 characters processed.
+[BWTIncConstructFromPacked] 20 iterations done. 200000000 characters processed.
+[BWTIncConstructFromPacked] 30 iterations done. 300000000 characters processed.
+[BWTIncConstructFromPacked] 40 iterations done. 400000000 characters processed.
+[BWTIncConstructFromPacked] 50 iterations done. 500000000 characters processed.
+[BWTIncConstructFromPacked] 60 iterations done. 600000000 characters processed.
+[BWTIncConstructFromPacked] 70 iterations done. 700000000 characters processed.
+[BWTIncConstructFromPacked] 80 iterations done. 800000000 characters processed.
+[BWTIncConstructFromPacked] 90 iterations done. 900000000 characters processed.
+[BWTIncConstructFromPacked] 100 iterations done. 1000000000 characters processed.
+[BWTIncConstructFromPacked] 110 iterations done. 1100000000 characters processed.
+[BWTIncConstructFromPacked] 120 iterations done. 1200000000 characters processed.
+[BWTIncConstructFromPacked] 130 iterations done. 1300000000 characters processed.
+[BWTIncConstructFromPacked] 140 iterations done. 1400000000 characters processed.
+[BWTIncConstructFromPacked] 150 iterations done. 1500000000 characters processed.
+[BWTIncConstructFromPacked] 160 iterations done. 1600000000 characters processed.
+[BWTIncConstructFromPacked] 170 iterations done. 1700000000 characters processed.
+[BWTIncConstructFromPacked] 180 iterations done. 1800000000 characters processed.
+[BWTIncConstructFromPacked] 190 iterations done. 1900000000 characters processed.
+[BWTIncConstructFromPacked] 200 iterations done. 2000000000 characters processed.
+[BWTIncConstructFromPacked] 210 iterations done. 2100000000 characters processed.
+[BWTIncConstructFromPacked] 220 iterations done. 2200000000 characters processed.
+[BWTIncConstructFromPacked] 230 iterations done. 2300000000 characters processed.
+[BWTIncConstructFromPacked] 240 iterations done. 2400000000 characters processed.
+[BWTIncConstructFromPacked] 250 iterations done. 2500000000 characters processed.
+[BWTIncConstructFromPacked] 260 iterations done. 2600000000 characters processed.
+[BWTIncConstructFromPacked] 270 iterations done. 2700000000 characters processed.
+[BWTIncConstructFromPacked] 280 iterations done. 2800000000 characters processed.
+[BWTIncConstructFromPacked] 290 iterations done. 2900000000 characters processed.
+[BWTIncConstructFromPacked] 300 iterations done. 3000000000 characters processed.
+[BWTIncConstructFromPacked] 310 iterations done. 3100000000 characters processed.
+[BWTIncConstructFromPacked] 320 iterations done. 3200000000 characters processed.
