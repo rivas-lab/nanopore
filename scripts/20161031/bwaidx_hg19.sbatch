@@ -5,7 +5,7 @@
 #################
 #time you think you need; default is 2 hours
 #format could be dd-hh:mm:ss, hh:mm:ss, mm:ss, or mm
-#SBATCH --time=12:00:00
+#SBATCH --time=0:30:00
 #################
 #quality of service; think of it as job priority
 #SBATCH --qos=normal
@@ -20,4 +20,4 @@
 #SBATCH --mem=32000
 #################
 
-bwa index ${PI_HOME}/data/hg19/*.fa
+bwa index ${PI_HOME}/data/hg19/hg19.fa
