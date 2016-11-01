@@ -1,4 +1,4 @@
-[bwa_index] Pack FASTA... 26.65 sec
+[bwa_index] Pack FASTA... 26.26 sec
 [bwa_index] Construct BWT for the packed sequence...
 [BWTIncCreate] textLength=6274322528, availableWord=453484340
 [BWTIncConstructFromPacked] 10 iterations done. 100000000 characters processed.
@@ -9,35 +9,3 @@
 [BWTIncConstructFromPacked] 60 iterations done. 600000000 characters processed.
 [BWTIncConstructFromPacked] 70 iterations done. 700000000 characters processed.
 [BWTIncConstructFromPacked] 80 iterations done. 800000000 characters processed.
-[BWTIncConstructFromPacked] 90 iterations done. 900000000 characters processed.
-[BWTIncConstructFromPacked] 100 iterations done. 1000000000 characters processed.
-[BWTIncConstructFromPacked] 110 iterations done. 1100000000 characters processed.
-[BWTIncConstructFromPacked] 120 iterations done. 1200000000 characters processed.
-[BWTIncConstructFromPacked] 130 iterations done. 1300000000 characters processed.
-[BWTIncConstructFromPacked] 140 iterations done. 1400000000 characters processed.
-[BWTIncConstructFromPacked] 150 iterations done. 1500000000 characters processed.
-[BWTIncConstructFromPacked] 160 iterations done. 1600000000 characters processed.
-[BWTIncConstructFromPacked] 170 iterations done. 1700000000 characters processed.
-[BWTIncConstructFromPacked] 180 iterations done. 1800000000 characters processed.
-[BWTIncConstructFromPacked] 190 iterations done. 1900000000 characters processed.
-[BWTIncConstructFromPacked] 200 iterations done. 2000000000 characters processed.
-[BWTIncConstructFromPacked] 210 iterations done. 2100000000 characters processed.
-[BWTIncConstructFromPacked] 220 iterations done. 2200000000 characters processed.
-[BWTIncConstructFromPacked] 230 iterations done. 2300000000 characters processed.
-[BWTIncConstructFromPacked] 240 iterations done. 2400000000 characters processed.
-[BWTIncConstructFromPacked] 250 iterations done. 2500000000 characters processed.
-[BWTIncConstructFromPacked] 260 iterations done. 2600000000 characters processed.
-[BWTIncConstructFromPacked] 270 iterations done. 2700000000 characters processed.
-[BWTIncConstructFromPacked] 280 iterations done. 2800000000 characters processed.
-[BWTIncConstructFromPacked] 290 iterations done. 2900000000 characters processed.
-[BWTIncConstructFromPacked] 300 iterations done. 3000000000 characters processed.
-[BWTIncConstructFromPacked] 310 iterations done. 3100000000 characters processed.
-[BWTIncConstructFromPacked] 320 iterations done. 3200000000 characters processed.
-[BWTIncConstructFromPacked] 330 iterations done. 3300000000 characters processed.
-[BWTIncConstructFromPacked] 340 iterations done. 3400000000 characters processed.
-[BWTIncConstructFromPacked] 350 iterations done. 3500000000 characters processed.
-[BWTIncConstructFromPacked] 360 iterations done. 3600000000 characters processed.
-[BWTIncConstructFromPacked] 370 iterations done. 3700000000 characters processed.
-[BWTIncConstructFromPacked] 380 iterations done. 3800000000 characters processed.
-[BWTIncConstructFromPacked] 390 iterations done. 3900000000 characters processed.
-slurmstepd: error: *** JOB 10566354 ON sh-5-24 CANCELLED AT 2016-10-31T19:13:42 DUE TO TIME LIMIT ***
