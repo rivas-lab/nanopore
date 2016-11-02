@@ -1,0 +1,10 @@
+--2016-11-02 00:16:32--  ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/NA12878/NA12878_PacBio_MtSinai/sorted_final_merged.bam
+           => “sorted_final_merged.bam”
+Resolving ftp-trace.ncbi.nlm.nih.gov... 130.14.250.13, 2607:f220:41e:250::11
+Connecting to ftp-trace.ncbi.nlm.nih.gov|130.14.250.13|:21... connected.
+Logging in as anonymous ... Logged in!
+==> SYST ... done.    ==> PWD ... done.
+==> TYPE I ... done.  ==> CWD (1) /giab/ftp/data/NA12878/NA12878_PacBio_MtSinai ... done.
+==> SIZE sorted_final_merged.bam ... 146870854017
+==> PASV ... done.    ==> RETR sorted_final_merged.bam ... done.
+sorted_final_merged.bam: Disk quota exceeded
