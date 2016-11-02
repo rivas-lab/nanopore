@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=ukbb.imp.chr11
-#SBATCH   --output=ukbb.imp.chr11.out
-#SBATCH    --error=ukbb.imp.chr11.err
+#SBATCH --job-name=ukbb.imp.chr11.md5
+#SBATCH   --output=ukbb.imp.chr11.md5.out
+#SBATCH    --error=ukbb.imp.chr11.md5.err
 #################
 #format could be dd-hh:mm:ss, hh:mm:ss, mm:ss, or mm
-#SBATCH --time=6:00:00
+#SBATCH --time=0:30:00
 #################
 #quality of service; think of it as job priority
 #SBATCH --qos=normal
@@ -26,10 +26,10 @@ cd ${DIR}
 # our "happy" chromosome :)
 for CHR in 11
 do
-    echo "[INFO]chrom${CHR}-gfetch-----------------------------------------"
-    ./gfetch imp ${CHR} -ak1669.ukbkey
+    #echo "[INFO]chrom${CHR}-gfetch-----------------------------------------"
+    #./gfetch imp ${CHR} -ak1669.ukbkey
     echo "[INFO]chrom${CHR}-ukb_md5----------------------------------------"
-    ./ukb_md5 chrom${CHR}.cal
+   ./ukb_md5 chr${CHR}impv1.bgen
 done
 
 # # Reference:
