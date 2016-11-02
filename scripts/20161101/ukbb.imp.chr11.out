@@ -2,3 +2,19 @@
 
 UKBiobank GFETCH
 Compiled May 20 2015 15:17:53.
+Querying remote inventory for chromosome 11, datatype imp
+692 bytes fetched
+Download has been logged against IP address 171.67.92.83
+
+SESSION 12163596 assigned to this request
+
+Fetching 66.5GB in 68 blocks.
+Output file "chr11impv1.bgen" opened
+.......................................................................................................................................
+Fetched 66.5GB
+Done in 17303 secs
+[INFO]chrom11-ukb_md5----------------------------------------
+
+UKBiobank ukb_md5_lx (c) CTSU. Compiled Dec  9 2013 10:37:15.
+
+Input file: "chrom11.cal" - FAILED TO OPEN
