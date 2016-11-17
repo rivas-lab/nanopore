@@ -165,8 +165,8 @@ R CMD build  ./R/mpganalysis.syzygy
 * building ‘mpganalysis.syzygy_1.4.2.tar.gz’
 Rscript ensureDepend.r Rdepends.lst NULL http://cran.r-project.org 
 R CMD INSTALL  mpganalysis.syzygy_1.4.2.tar.gz
-make[1]: Entering directory `/tmp/RtmpJP87hs/R.INSTALL13d452a4bedde/mpganalysis.syzygy/src'
+make[1]: Entering directory `/tmp/RtmpwBqCob/R.INSTALL18f645e4afcd6/mpganalysis.syzygy/src'
 gcc -std=gnu99 -I/home/ytanigaw/.conda/envs/pgenlib/lib/R/include -DNDEBUG  -I/home/ytanigaw/.conda/envs/pgenlib/include    -fpic  -I/home/ytanigaw/.conda/envs/pgenlib/include  -c lods.c -o lods.o
 gcc -std=gnu99 -I/home/ytanigaw/.conda/envs/pgenlib/lib/R/include -DNDEBUG  -I/home/ytanigaw/.conda/envs/pgenlib/include    -fpic  -I/home/ytanigaw/.conda/envs/pgenlib/include  -c loglik_hyp.c -o loglik_hyp.o
 gcc -std=gnu99 -shared -L/home/ytanigaw/.conda/envs/pgenlib/lib/R/lib -L/home/ytanigaw/.conda/envs/pgenlib/lib -lgfortran -o mpganalysis.syzygy.so lods.o loglik_hyp.o -L/home/ytanigaw/.conda/envs/pgenlib/lib/R/lib -lR
-make[1]: Leaving directory `/tmp/RtmpJP87hs/R.INSTALL13d452a4bedde/mpganalysis.syzygy/src'
+make[1]: Leaving directory `/tmp/RtmpwBqCob/R.INSTALL18f645e4afcd6/mpganalysis.syzygy/src'

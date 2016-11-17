@@ -8,11 +8,11 @@ Error compiling Cython file:
 
 # Some nasty global variables
 cdef list per_base_indel_errors = [2.9e-5, 2.9e-5, 2.9e-5, 2.9e-5, 4.3e-5, 1.1e-4, 2.4e-4, 5.7e-4, 1.0e-3, 1.4e-3] + [ 1.4e-3 + 4.3e-4*(n-10) for n in range(11,50) ]
-cdef bytes homopolq = ''.join([chr(int(33.5 + 10*log( (idx+1)*q )/log(0.1) )) for idx,q in enumerate(per_base_indel_errors)])
+cdef bytes homopolq = ''.join([<bytes>(chr(int(33.5 + 10*log( (idx+1)*q )/log(0.1) ))) for idx,q in enumerate(per_base_indel_errors)])
                             ^
 ------------------------------------------------------------
 
-chaplotype.pyx:40:29: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
+chaplotype.pyx:42:29: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
 
 Error compiling Cython file:
 ------------------------------------------------------------
@@ -22,11 +22,11 @@ Error compiling Cython file:
                 if currentPos < self.endPos:
                     bitsOfMutatedSeq.append(self.refFile.getSequence(self.refName, currentPos, self.endPos) )
 
-                self.haplotypeSequence = ''.join(bitsOfMutatedSeq)
+                self.haplotypeSequence = ''.join([<bytes>(x) for x in bitsOfMutatedSeq])
                                                ^
 ------------------------------------------------------------
 
-chaplotype.pyx:395:48: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
+chaplotype.pyx:397:48: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
 chaplotype.c:1:2: error: #error Do not use this file, it is the result of a failed Cython compilation.
 error: command 'gcc' failed with exit status 1
 TEST FAILED: /home/ytanigaw/lib/python2.7/site-packages/ does NOT support .pth files
@@ -68,11 +68,11 @@ Error compiling Cython file:
 
 # Some nasty global variables
 cdef list per_base_indel_errors = [2.9e-5, 2.9e-5, 2.9e-5, 2.9e-5, 4.3e-5, 1.1e-4, 2.4e-4, 5.7e-4, 1.0e-3, 1.4e-3] + [ 1.4e-3 + 4.3e-4*(n-10) for n in range(11,50) ]
-cdef bytes homopolq = ''.join([chr(int(33.5 + 10*log( (idx+1)*q )/log(0.1) )) for idx,q in enumerate(per_base_indel_errors)])
+cdef bytes homopolq = ''.join([<bytes>(chr(int(33.5 + 10*log( (idx+1)*q )/log(0.1) ))) for idx,q in enumerate(per_base_indel_errors)])
                             ^
 ------------------------------------------------------------
 
-chaplotype.pyx:40:29: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
+chaplotype.pyx:42:29: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
 
 Error compiling Cython file:
 ------------------------------------------------------------
@@ -82,11 +82,11 @@ Error compiling Cython file:
                 if currentPos < self.endPos:
                     bitsOfMutatedSeq.append(self.refFile.getSequence(self.refName, currentPos, self.endPos) )
 
-                self.haplotypeSequence = ''.join(bitsOfMutatedSeq)
+                self.haplotypeSequence = ''.join([<bytes>(x) for x in bitsOfMutatedSeq])
                                                ^
 ------------------------------------------------------------
 
-chaplotype.pyx:395:48: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
+chaplotype.pyx:397:48: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
 chaplotype.c:1:2: error: #error Do not use this file, it is the result of a failed Cython compilation.
 error: command 'gcc' failed with exit status 1
 Warning: invalid uid value replaced by that for user 'nobody'
