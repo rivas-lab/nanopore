@@ -1,0 +1,105 @@
+Python 2.7.5 :: Continuum Analytics, Inc.
+
+Error compiling Cython file:
+------------------------------------------------------------
+...
+
+###################################################################################################
+
+# Some nasty global variables
+cdef list per_base_indel_errors = [2.9e-5, 2.9e-5, 2.9e-5, 2.9e-5, 4.3e-5, 1.1e-4, 2.4e-4, 5.7e-4, 1.0e-3, 1.4e-3] + [ 1.4e-3 + 4.3e-4*(n-10) for n in range(11,50) ]
+cdef bytes homopolq = ''.join([chr(int(33.5 + 10*log( (idx+1)*q )/log(0.1) )) for idx,q in enumerate(per_base_indel_errors)])
+                            ^
+------------------------------------------------------------
+
+chaplotype.pyx:40:29: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
+
+Error compiling Cython file:
+------------------------------------------------------------
+...
+
+                # Is this ok when currentPos == endPos?
+                if currentPos < self.endPos:
+                    bitsOfMutatedSeq.append(self.refFile.getSequence(self.refName, currentPos, self.endPos) )
+
+                self.haplotypeSequence = ''.join(bitsOfMutatedSeq)
+                                               ^
+------------------------------------------------------------
+
+chaplotype.pyx:395:48: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
+chaplotype.c:1:2: error: #error Do not use this file, it is the result of a failed Cython compilation.
+error: command 'gcc' failed with exit status 1
+TEST FAILED: /home/ytanigaw/lib/python2.7/site-packages/ does NOT support .pth files
+error: bad install directory or PYTHONPATH
+
+You are attempting to install a package to a directory that is not
+on PYTHONPATH and which Python does not read ".pth" files from.  The
+installation directory you specified (via --install-dir, --prefix, or
+the distutils default setting) was:
+
+    /home/ytanigaw/lib/python2.7/site-packages/
+
+and your PYTHONPATH environment variable currently contains:
+
+    ''
+
+Here are some of your options for correcting the problem:
+
+* You can choose a different installation directory, i.e., one that is
+  on PYTHONPATH or supports .pth files
+
+* You can add the installation directory to the PYTHONPATH environment
+  variable.  (It must then also be on PYTHONPATH whenever you run
+  Python and want to use the package(s) you are installing.)
+
+* You can set up the installation directory to support ".pth" files by
+  using one of the approaches described here:
+
+  https://setuptools.readthedocs.io/en/latest/easy_install.html#custom-installation-locations
+
+
+Please make the appropriate changes for your system and try again.
+
+Error compiling Cython file:
+------------------------------------------------------------
+...
+
+###################################################################################################
+
+# Some nasty global variables
+cdef list per_base_indel_errors = [2.9e-5, 2.9e-5, 2.9e-5, 2.9e-5, 4.3e-5, 1.1e-4, 2.4e-4, 5.7e-4, 1.0e-3, 1.4e-3] + [ 1.4e-3 + 4.3e-4*(n-10) for n in range(11,50) ]
+cdef bytes homopolq = ''.join([chr(int(33.5 + 10*log( (idx+1)*q )/log(0.1) )) for idx,q in enumerate(per_base_indel_errors)])
+                            ^
+------------------------------------------------------------
+
+chaplotype.pyx:40:29: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
+
+Error compiling Cython file:
+------------------------------------------------------------
+...
+
+                # Is this ok when currentPos == endPos?
+                if currentPos < self.endPos:
+                    bitsOfMutatedSeq.append(self.refFile.getSequence(self.refName, currentPos, self.endPos) )
+
+                self.haplotypeSequence = ''.join(bitsOfMutatedSeq)
+                                               ^
+------------------------------------------------------------
+
+chaplotype.pyx:395:48: Cannot convert 'basestring' object to bytes implicitly. This is not portable.
+chaplotype.c:1:2: error: #error Do not use this file, it is the result of a failed Cython compilation.
+error: command 'gcc' failed with exit status 1
+Warning: invalid uid value replaced by that for user 'nobody'
+Warning: invalid gid value replaced by that for user 'nobody'
+
+* installing to library ‘/home/ytanigaw/.conda/envs/pgenlib/lib/R/library’
+* installing *source* package ‘mpganalysis.syzygy’ ...
+** libs
+installing to /home/ytanigaw/.conda/envs/pgenlib/lib/R/library/mpganalysis.syzygy/libs
+** R
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (mpganalysis.syzygy)

@@ -1,0 +1,172 @@
+/home/ytanigaw/.conda/envs/pgenlib/bin/python
+/home/ytanigaw/.conda/envs/pgenlib/bin/R
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under the terms of the
+GNU General Public License versions 2 or 3.
+For more information about these matters see
+http://www.gnu.org/licenses/.
+
+/bin/rm -rf python/build
+/bin/rm -f python/*.c
+/bin/rm -f mpganalysis.syzygy_1.4.2.tar.gz
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking for a BSD-compatible install... /usr/bin/install -c
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for R... R
+checking for Rscript... Rscript
+checking for python... python
+checking for find... find
+checking for cython... cython
+checking how to run the C preprocessor... gcc -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking for size_t... yes
+checking for pow... no
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating config.h
+config.status: config.h is unchanged
+cython ./python/*.pyx
+cd ./python; python setup_syzygy.py build ; cd ..
+running build
+running build_py
+creating build
+creating build/lib
+creating build/lib/syzygy
+copying ErrorModel.py -> build/lib/syzygy
+copying IndelHWE.py -> build/lib/syzygy
+copying IndividualPoolSummary.py -> build/lib/syzygy
+copying MiSeqTSCASummary.py -> build/lib/syzygy
+copying GenerateAllCallsFile.py -> build/lib/syzygy
+copying Learn2ndbestIntensity.py -> build/lib/syzygy
+copying MergeBAM.py -> build/lib/syzygy
+copying FinalAnnotation.py -> build/lib/syzygy
+copying SyzygyWrapper.py -> build/lib/syzygy
+copying CleanUpFiles.py -> build/lib/syzygy
+copying CombineResults.py -> build/lib/syzygy
+copying GenerateSNPCallsFile.py -> build/lib/syzygy
+copying AnnotateSNP.py -> build/lib/syzygy
+copying ReadBAM.py -> build/lib/syzygy
+copying CleanUpSNPCalls.py -> build/lib/syzygy
+copying SplitTGF.py -> build/lib/syzygy
+copying runrscript.py -> build/lib/syzygy
+copying SAMPileupAnalysis.py -> build/lib/syzygy
+copying __init__.py -> build/lib/syzygy
+copying CalphaRareTest.py -> build/lib/syzygy
+copying VCFConvert.py -> build/lib/syzygy
+copying ParseAnnotation.py -> build/lib/syzygy
+copying SubmitSplit.py -> build/lib/syzygy
+copying PlotVisualizations.py -> build/lib/syzygy
+copying EMFreqAssocStrand.py -> build/lib/syzygy
+copying ComparelowpassMiSEQ.py -> build/lib/syzygy
+copying SAMpileuphelper.py -> build/lib/syzygy
+running build
+running build_ext
+building 'emalgorithm' extension
+creating build/temp.linux-x86_64-2.7
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/ytanigaw/.conda/envs/pgenlib/include/python2.7 -c emalgorithm.c -o build/temp.linux-x86_64-2.7/emalgorithm.o
+creating build/lib.linux-x86_64-2.7
+gcc -pthread -shared build/temp.linux-x86_64-2.7/emalgorithm.o -L/home/ytanigaw/.conda/envs/pgenlib/lib -lpython2.7 -o build/lib.linux-x86_64-2.7/emalgorithm.so
+running build
+running build_ext
+building 'statslib' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I/home/ytanigaw/.conda/envs/pgenlib/include/python2.7 -c statslib.c -o build/temp.linux-x86_64-2.7/statslib.o
+gcc -pthread -shared build/temp.linux-x86_64-2.7/statslib.o -L/home/ytanigaw/.conda/envs/pgenlib/lib -lpython2.7 -o build/lib.linux-x86_64-2.7/statslib.so
+cd ./coreutils; python setup.py build ; cd ..
+running build
+running build_ext
+skipping 'samtoolsWrapper.c' Cython extension (up-to-date)
+running build
+running build_ext
+skipping 'fastafile.c' Cython extension (up-to-date)
+running build
+running build_ext
+skipping 'bamfileutils.c' Cython extension (up-to-date)
+running build
+running build_ext
+skipping 'variant.c' Cython extension (up-to-date)
+running build
+running build_ext
+cythoning chaplotype.pyx to chaplotype.c
+building 'chaplotype' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -Isamtools -I./ -I/home/ytanigaw/.conda/envs/pgenlib/include/python2.7 -c chaplotype.c -o build/temp.linux-x86_64-2.7/chaplotype.o -msse2
+cd ./python; python setup_syzygy.py install --prefix=/home/ytanigaw; cd ..
+running install
+Checking .pth file support in /home/ytanigaw/lib/python2.7/site-packages/
+/home/ytanigaw/.conda/envs/pgenlib/bin/python -E -c pass
+cd ./coreutils; python setup.py install --prefix=/home/ytanigaw; cd ..
+running install
+running build
+running build_ext
+skipping 'samtoolsWrapper.c' Cython extension (up-to-date)
+running install_lib
+running install_egg_info
+Removing /home/ytanigaw/lib/python2.7/site-packages/samtoolsWrapper-0.0.0-py2.7.egg-info
+Writing /home/ytanigaw/lib/python2.7/site-packages/samtoolsWrapper-0.0.0-py2.7.egg-info
+running install
+running build
+running build_ext
+skipping 'fastafile.c' Cython extension (up-to-date)
+running install_lib
+running install_egg_info
+Removing /home/ytanigaw/lib/python2.7/site-packages/fastafile-0.0.0-py2.7.egg-info
+Writing /home/ytanigaw/lib/python2.7/site-packages/fastafile-0.0.0-py2.7.egg-info
+running install
+running build
+running build_ext
+skipping 'bamfileutils.c' Cython extension (up-to-date)
+running install_lib
+running install_egg_info
+Removing /home/ytanigaw/lib/python2.7/site-packages/bamfileutils-0.0.0-py2.7.egg-info
+Writing /home/ytanigaw/lib/python2.7/site-packages/bamfileutils-0.0.0-py2.7.egg-info
+running install
+running build
+running build_ext
+skipping 'variant.c' Cython extension (up-to-date)
+running install_lib
+running install_egg_info
+Removing /home/ytanigaw/lib/python2.7/site-packages/variant-0.0.0-py2.7.egg-info
+Writing /home/ytanigaw/lib/python2.7/site-packages/variant-0.0.0-py2.7.egg-info
+running install
+running build
+running build_ext
+cythoning chaplotype.pyx to chaplotype.c
+building 'chaplotype' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -Isamtools -I./ -I/home/ytanigaw/.conda/envs/pgenlib/include/python2.7 -c chaplotype.c -o build/temp.linux-x86_64-2.7/chaplotype.o -msse2
+R CMD build  ./R/mpganalysis.syzygy
+* checking for file ‘./R/mpganalysis.syzygy/DESCRIPTION’ ... OK
+* preparing ‘mpganalysis.syzygy’:
+* checking DESCRIPTION meta-information ... OK
+* cleaning src
+* checking for LF line-endings in source and make files
+* checking for empty or unneeded directories
+* building ‘mpganalysis.syzygy_1.4.2.tar.gz’
+Rscript ensureDepend.r Rdepends.lst NULL http://cran.r-project.org 
+R CMD INSTALL  mpganalysis.syzygy_1.4.2.tar.gz
+make[1]: Entering directory `/tmp/RtmpfNWDI6/R.INSTALL129ae294dbfbe/mpganalysis.syzygy/src'
+gcc -std=gnu99 -I/home/ytanigaw/.conda/envs/pgenlib/lib/R/include -DNDEBUG  -I/home/ytanigaw/.conda/envs/pgenlib/include    -fpic  -I/home/ytanigaw/.conda/envs/pgenlib/include  -c lods.c -o lods.o
+gcc -std=gnu99 -I/home/ytanigaw/.conda/envs/pgenlib/lib/R/include -DNDEBUG  -I/home/ytanigaw/.conda/envs/pgenlib/include    -fpic  -I/home/ytanigaw/.conda/envs/pgenlib/include  -c loglik_hyp.c -o loglik_hyp.o
+gcc -std=gnu99 -shared -L/home/ytanigaw/.conda/envs/pgenlib/lib/R/lib -L/home/ytanigaw/.conda/envs/pgenlib/lib -lgfortran -o mpganalysis.syzygy.so lods.o loglik_hyp.o -L/home/ytanigaw/.conda/envs/pgenlib/lib/R/lib -lR
+make[1]: Leaving directory `/tmp/RtmpfNWDI6/R.INSTALL129ae294dbfbe/mpganalysis.syzygy/src'
