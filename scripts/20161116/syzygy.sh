@@ -15,6 +15,6 @@ PYTHONPATH=/home/ytanigaw/.conda/envs/pgenlib/lib/python2.7/site-packages/
 
 make clean
 
-./configure --prefix=$HOME
+./configure --prefix=$HOME --libdir=${HOME}/.conda/envs/pgenlib/lib
 
 make install
