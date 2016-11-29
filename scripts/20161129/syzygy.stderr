@@ -1,0 +1,19 @@
+Python 2.7.5 :: Continuum Analytics, Inc.
+zip_safe flag not set; analyzing archive contents...
+warning: manifest_maker: MANIFEST.in, line 19: 'recursive-include' expects <dir> <pattern1> <pattern2> ...
+
+zip_safe flag not set; analyzing archive contents...
+zip_safe flag not set; analyzing archive contents...
+Warning: invalid uid value replaced by that for user 'nobody'
+Warning: invalid gid value replaced by that for user 'nobody'
+
+* installing *source* package ‘mpganalysis.syzygy’ ...
+** libs
+installing to /home/ytanigaw/.conda/envs/pgenlib/lib/R/library/mpganalysis.syzygy/libs
+** R
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (mpganalysis.syzygy)
