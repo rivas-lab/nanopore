@@ -109,10 +109,7 @@ running build_ext
 skipping 'variant.c' Cython extension (up-to-date)
 running build
 running build_ext
-cythoning chaplotype.pyx to chaplotype.c
-building 'chaplotype' extension
-gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -Isamtools -I./ -I/home/ytanigaw/.conda/envs/pgenlib/include/python2.7 -c chaplotype.c -o build/temp.linux-x86_64-2.7/chaplotype.o -msse2
-gcc -pthread -shared build/temp.linux-x86_64-2.7/chaplotype.o -L/home/ytanigaw/.conda/envs/pgenlib/lib -lpython2.7 -o build/lib.linux-x86_64-2.7/chaplotype.so
+skipping 'chaplotype.c' Cython extension (up-to-date)
 cd ./python; /home/ytanigaw/.conda/envs/pgenlib/bin/python setup_syzygy.py install --prefix=/home/ytanigaw; cd ..
 running install
 Checking .pth file support in /home/ytanigaw/lib/python2.7/site-packages/
@@ -123,7 +120,6 @@ running build
 running build_ext
 skipping 'samtoolsWrapper.c' Cython extension (up-to-date)
 running install_lib
-copying build/lib.linux-x86_64-2.7/chaplotype.so -> /home/ytanigaw/lib/python2.7/site-packages
 running install_egg_info
 Removing /home/ytanigaw/lib/python2.7/site-packages/samtoolsWrapper-0.0.0-py2.7.egg-info
 Writing /home/ytanigaw/lib/python2.7/site-packages/samtoolsWrapper-0.0.0-py2.7.egg-info
@@ -157,6 +153,7 @@ running build_ext
 skipping 'chaplotype.c' Cython extension (up-to-date)
 running install_lib
 running install_egg_info
+Removing /home/ytanigaw/lib/python2.7/site-packages/chaplotype-0.0.0-py2.7.egg-info
 Writing /home/ytanigaw/lib/python2.7/site-packages/chaplotype-0.0.0-py2.7.egg-info
 /home/ytanigaw/.conda/envs/pgenlib/bin/R CMD build  ./R/mpganalysis.syzygy
 * checking for file ‘./R/mpganalysis.syzygy/DESCRIPTION’ ... OK
@@ -169,8 +166,8 @@ Writing /home/ytanigaw/lib/python2.7/site-packages/chaplotype-0.0.0-py2.7.egg-in
 /bin/mkdir -p /home/ytanigaw/.conda/envs/pgenlib/lib/R/library/
 /home/ytanigaw/.conda/envs/pgenlib/bin/Rscript ensureDepend.r Rdepends.lst /home/ytanigaw/.conda/envs/pgenlib/lib/R/library/ http://cran.r-project.org 
 /home/ytanigaw/.conda/envs/pgenlib/bin/R CMD INSTALL  --library=/home/ytanigaw/.conda/envs/pgenlib/lib/R/library/ mpganalysis.syzygy_1.4.2.tar.gz
-make[1]: Entering directory `/tmp/RtmpiI0EjU/R.INSTALL278a028ac4d9a/mpganalysis.syzygy/src'
+make[1]: Entering directory `/tmp/Rtmpl8R1sH/R.INSTALL29a0d18e1b947/mpganalysis.syzygy/src'
 gcc -std=gnu99 -I/home/ytanigaw/.conda/envs/pgenlib/lib/R/include -DNDEBUG  -I/home/ytanigaw/.conda/envs/pgenlib/include    -fpic  -I/home/ytanigaw/.conda/envs/pgenlib/include  -c lods.c -o lods.o
 gcc -std=gnu99 -I/home/ytanigaw/.conda/envs/pgenlib/lib/R/include -DNDEBUG  -I/home/ytanigaw/.conda/envs/pgenlib/include    -fpic  -I/home/ytanigaw/.conda/envs/pgenlib/include  -c loglik_hyp.c -o loglik_hyp.o
 gcc -std=gnu99 -shared -L/home/ytanigaw/.conda/envs/pgenlib/lib/R/lib -L/home/ytanigaw/.conda/envs/pgenlib/lib -lgfortran -o mpganalysis.syzygy.so lods.o loglik_hyp.o -L/home/ytanigaw/.conda/envs/pgenlib/lib/R/lib -lR
-make[1]: Leaving directory `/tmp/RtmpiI0EjU/R.INSTALL278a028ac4d9a/mpganalysis.syzygy/src'
+make[1]: Leaving directory `/tmp/Rtmpl8R1sH/R.INSTALL29a0d18e1b947/mpganalysis.syzygy/src'

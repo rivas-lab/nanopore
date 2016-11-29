@@ -1,7 +1,4 @@
 Python 2.7.5 :: Continuum Analytics, Inc.
-In file included from chaplotype.c:410:
-samtools/bam.h:342: warning: function declaration isn’t a prototype
-samtools/bam.h:352: warning: function declaration isn’t a prototype
 TEST FAILED: /home/ytanigaw/lib/python2.7/site-packages/ does NOT support .pth files
 error: bad install directory or PYTHONPATH
 
