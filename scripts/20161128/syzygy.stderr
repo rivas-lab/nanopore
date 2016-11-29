@@ -1,0 +1,47 @@
+Python 2.7.5 :: Continuum Analytics, Inc.
+In file included from chaplotype.c:410:
+samtools/bam.h:342: warning: function declaration isn’t a prototype
+samtools/bam.h:352: warning: function declaration isn’t a prototype
+TEST FAILED: /home/ytanigaw/lib/python2.7/site-packages/ does NOT support .pth files
+error: bad install directory or PYTHONPATH
+
+You are attempting to install a package to a directory that is not
+on PYTHONPATH and which Python does not read ".pth" files from.  The
+installation directory you specified (via --install-dir, --prefix, or
+the distutils default setting) was:
+
+    /home/ytanigaw/lib/python2.7/site-packages/
+
+and your PYTHONPATH environment variable currently contains:
+
+    '/home/ytanigaw/.conda/envs/pgenlib/lib/python2.7/site-packages/'
+
+Here are some of your options for correcting the problem:
+
+* You can choose a different installation directory, i.e., one that is
+  on PYTHONPATH or supports .pth files
+
+* You can add the installation directory to the PYTHONPATH environment
+  variable.  (It must then also be on PYTHONPATH whenever you run
+  Python and want to use the package(s) you are installing.)
+
+* You can set up the installation directory to support ".pth" files by
+  using one of the approaches described here:
+
+  https://setuptools.readthedocs.io/en/latest/easy_install.html#custom-installation-locations
+
+
+Please make the appropriate changes for your system and try again.
+Warning: invalid uid value replaced by that for user 'nobody'
+Warning: invalid gid value replaced by that for user 'nobody'
+
+* installing *source* package ‘mpganalysis.syzygy’ ...
+** libs
+installing to /home/ytanigaw/.conda/envs/pgenlib/lib/R/library/mpganalysis.syzygy/libs
+** R
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (mpganalysis.syzygy)
