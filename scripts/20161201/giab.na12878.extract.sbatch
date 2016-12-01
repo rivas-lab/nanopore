@@ -21,7 +21,6 @@ samtools view -H ${BAM}.bam > ${OUT}.sam
 # extract reads
 samtools view ${BAM}.bam \
     | grep -v ^@ \
-    | head -n100 \
     | awk '{if(length($10) > 15000){print $0}}' >> ${OUT}.sam
 
 # convert to bam
