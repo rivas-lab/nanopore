@@ -1,1 +1,2 @@
 [samopen] SAM header is present: 93 sequences.
+slurmstepd: error: Exceeded step memory limit at some point.
