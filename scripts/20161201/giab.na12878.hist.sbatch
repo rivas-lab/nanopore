@@ -12,7 +12,7 @@
 #################
 
 DIR=${PI_HOME}/data/giab/NA12878_PacBio_MtSinai
-STATS=${DIR}/sorted_final_merged.bam.stats.head
+STATS=${DIR}/sorted_final_merged.bam.stats
 PROG=/home/ytanigaw/projects/nanopore/src/stats2hist.py
 
 module load anaconda
