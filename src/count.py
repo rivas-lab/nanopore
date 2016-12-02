@@ -1,144 +1,207 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
+
+import pysam
 
 _README_ = '''
 -------------------------------------------------------------------------
-count match/mismatch/indel (python3 implementaion)
-Author: Yosuke Tanigawa (ytanigaw@stanford.edu)
+count match/mismatches from sam file
 -------------------------------------------------------------------------
 '''
 
-import argparse
-
-class maf_item():
-    # This class can store an alignment in a maf file
-    # 
-    # For example,
-    #   a score=27 EG2=4.7e+04 E=2.6e-05
-    #   s humanMito 2170 145 + 16571 AGTAGGCCTAAAAGCAGCCACCAATTAAGAAAGCGTT...
-    #   s fuguMito  1648 142 + 16447 AGTAGGCTTAGAAGCAGCCACCA--CAAGAAAGCGTT...
-    # This data can be stored as follows
-    #  entry = maf_item('score=27 EG2=4.7e+04 E=2.6e-05')
-    #  entry.append('humanMito', 2170, 145, '+', 16571, 'AGTAGGCCTAAAAGCAGCCACCAATTAAGAAAGCGTT...')
-    #  entry.append('fuguMito',  1648, 142, '+', 16447, 'AGTAGGCTTAGAAGCAGCCACCA--CAAGAAAGCGTT...')
-    # http://last.cbrc.jp/doc/last-tutorial.html
-    def __init__(self, a):
-        self._a = a
-        self._name    = []
-        self._name_hash = {}
-        self._start   = []
-        self._alnSize = []
-        self._strand  = []
-        self._seqSize = []
-        self._alignment = []
-        self.other_fields = {}
-    def __str__(self):
-        strs = []
-        strs.append(self._a + " ({0} sequences)".format(self.size()))
-        return('\n'.join(strs))
-    def size(self):
-        return(len(self._name))
-    def append(self, l):
-        name, start, alnSize, strand, seqSize, alignment = l[0], l[1], l[2], l[3], l[4], l[5]
-        # add a sequence into alignment
-        self._name_hash[name] = self.size()
-        self._name.append(name)
-        self._start.append(start)
-        self._alnSize.append(alnSize)
-        self._strand.append(strand)
-        self._seqSize.append(seqSize)
-        self._alignment.append(alignment.upper())
-    def add_field(self, key, val):
-        # add some additional information about alignment
-        self.other_fields[key] = val
-        
-    def count_sub(self, ref_id = 0, tar_id = 1):
-        # count match/mismatch/insertion/deletion
-        if(self.size() <= max(ref_id, tar_id)):
-            return([-1, -1, -1, -1])
+def read_sam(sam_f, sep = None):
+    '''
+    read a sam file. assumes there is no header component.
+    '''
+    with open(sam_f, 'r') as f:
+        if(sep != None):
+            entries = [line.strip().split(sep) for line in f]
         else:
-            match = 0
-            mismatch = 0
-            insertion = 0
-            deletion = 0
-            seq_ref = self.get(ref_id)[5]
-            seq_tar = self.get(tar_id)[5]
-            for position in range(len(seq_ref)):
-                if(seq_ref[position] == '-'):
-                    insertion += 1
-                elif(seq_tar[position] == '-'):
-                    deletion += 1
-                elif(seq_ref[position] == seq_tar[position]):
-                    match += 1
+            entries = [line.strip().split() for line in f]
+    return(entries)
+
+def parse_cigar(cigar):
+    '''
+    parse CIGAR string and return them as list of 2-tupples and
+    count the length of reference sequence corresponding to the query
+    '''
+    parsed = []
+    start = 0
+    i = 0
+    ref_len = 0
+    while(i < len(cigar)):
+        while('0' <= cigar[i] <= '9'):
+            i = i + 1
+        segment_length = int(cigar[start:i])
+        segment_type = cigar[i]
+        if(segment_type != 'I'):
+            ref_len = ref_len + segment_length
+        parsed.append((segment_length, segment_type))
+        i = i + 1
+        start = i
+    return(parsed, ref_len)
+
+def retrieve_alignment(seq, ref, qual, cigar_list, 
+                       gap_char = '_', qval_thr = 20):
+    '''
+    Based on parsed CIGAR string and read(seq) and reference(ref),
+    reconstruct an alignment and count match/mismatches
+    '''
+    aln_seq = []
+    aln_ref = []
+    aln_chr = []
+    aln_qual = []
+    snps = []
+    ptr_seq = 0
+    ptr_ref = 0
+    counts_high_q = {'M':0, 'I':0, 'D':0, 'N':0, 'S':0, 'H':0, 'P':0, '=':0, 'X':0}
+    counts_low_q = {'M':0, 'I':0, 'D':0, 'N':0, 'S':0, 'H':0, 'P':0, '=':0, 'X':0}
+    q_thr = str(unichr(33 + qval_thr))
+    for i in xrange(len(cigar_list)):
+        if(cigar_list[i][1] == 'M'):
+            aln_qual.append(qual[ptr_seq : ptr_seq + cigar_list[i][0]])
+            for j in xrange(cigar_list[i][0]):
+                aln_seq.append(seq[ptr_seq])
+                aln_ref.append(ref[ptr_ref])
+                if(seq[ptr_seq].upper() == ref[ptr_ref].upper()):
+                    aln_chr.append('=')
+                    if(q_thr <= qual[ptr_seq]):
+                        counts_high_q['='] = counts_high_q['='] + 1
+                    else:
+                        counts_low_q['='] = counts_low_q['='] + 1
                 else:
-                    mismatch += 1
-            return([match, mismatch, insertion, deletion])
-    def count(self, ref_id = 0, tar_id = 1):
-        count_stats = []
-        count_stats += self.count_sub(ref_id, tar_id)
-        count_stats += self.get(ref_id)[:-1]
-        count_stats += self.get(tar_id)[:-1]
-        return(count_stats)
-    def get_id(self, name):
-        return(self._name_hash[name])
-    def get_by_name(self, name):
-        return(self.get(self.get_id(name)))
-    def get(self, i):
-        # get a component of the alignment
-        return([self._name[i], self._start[i], self._alnSize[i], 
-                self._strand[i], self._seqSize[i], self._alignment[i]])
-    def dump(self):
-        # show the alignment
+                    aln_chr.append('X')
+                    if(q_thr <= qual[ptr_seq]):
+                        counts_high_q['X'] = counts_high_q['X'] + 1
+                        snps.append((ptr_ref, ref[ptr_ref], seq[ptr_seq]))
+                    else:
+                        counts_low_q['X'] = counts_low_q['X'] + 1                
+                ptr_seq = ptr_seq + 1
+                ptr_ref = ptr_ref + 1
+        elif(cigar_list[i][1] == 'I'):
+            aln_qual.append(qual[ptr_seq : ptr_seq + cigar_list[i][0]])
+            aln_seq.append(seq[ptr_seq : ptr_seq + cigar_list[i][0]])
+            for j in xrange(cigar_list[i][0]):
+                if(q_thr <= qual[ptr_seq]):
+                    counts_high_q['I'] = counts_high_q['I'] + 1
+                else:
+                    counts_low_q['I'] = counts_low_q['I'] + 1
+                ptr_seq = ptr_seq + 1
+            aln_ref.append(gap_char * cigar_list[i][0])    
+            aln_chr.append('I' * cigar_list[i][0])    
+        elif(cigar_list[i][1] == 'D'):    
+            aln_qual.append(' ' * cigar_list[i][0])
+            aln_seq.append(gap_char * cigar_list[i][0])
+            aln_ref.append(ref[ptr_ref : ptr_ref + cigar_list[i][0]])
+            ptr_ref = ptr_ref + cigar_list[i][0]
+            aln_chr.append('D' * cigar_list[i][0])    
+            counts_high_q['D'] = counts_high_q['D'] + cigar_list[i][0]                                           
+        else:
+            aln_qual.append(qual[ptr_seq : ptr_seq + cigar_list[i][0]])
+            aln_seq.append(seq[ptr_seq : ptr_seq + cigar_list[i][0]])
+            for j in xrange(cigar_list[i][0]):
+                if(q_thr <= qual[ptr_seq]):
+                    counts_high_q[cigar_list[i][1]] = counts_high_q[cigar_list[i][1]] + 1
+                else:
+                    counts_low_q[cigar_list[i][1]] = counts_low_q[cigar_list[i][1]] + 1
+                ptr_seq = ptr_seq + 1            
+            aln_ref.append(ref[ptr_ref : ptr_ref + cigar_list[i][0]])
+            ptr_ref = ptr_ref + cigar_list[i][0]
+            aln_chr.append(cigar_list[i][1] * cigar_list[i][0])
+    return(''.join(aln_seq), ''.join(aln_ref), ''.join(aln_chr), ''.join(aln_qual),
+           ptr_ref, counts_high_q, counts_low_q, snps)    
+
+def process_entry(e, reference, gap_char = '_', qval_thr = 20):
+    '''
+    process one line in a sam file and returns an object of sam_entry class
+    '''
+    cigar_list, ref_len = parse_cigar(e[5])
+    (aln_seq, aln_ref, aln_chr, aln_qual, ptr_ref, counts_high_q, counts_low_q, snps) = \
+    retrieve_alignment(seq = e[9],
+                       ref = reference.fetch(reference = e[2],
+                                             start = int(e[3]) - 1, 
+                                             end = int(e[3]) - 1 + ref_len),
+                       qual = e[10],
+                       cigar_list = cigar_list, 
+                       gap_char = gap_char)
+    return(sam_entry(e[2], int(e[3]), int(e[3]) + ptr_ref, len(e[9]), 
+                     counts_high_q, counts_low_q, qval_thr, 
+                     aln_seq, aln_ref, aln_chr, aln_qual, snps, e))
+
+class sam_entry:
+    def __init__(self, name, aln_start, aln_end, seq_len,
+                 counts_high_q, counts_low_q, qscore_t,
+                 aln_seq, aln_ref, aln_chr, aln_qual, snps, raw):
+        self.name = name
+        self.aln_start = aln_start
+        self.aln_end = aln_end
+        self.seq_len = seq_len
+        self.counts_high_q = counts_high_q
+        self.counts_low_q = counts_low_q
+        self.qscore_t = qscore_t
+        self.aln_seq = aln_seq
+        self.aln_ref = aln_ref
+        self.aln_chr = aln_chr
+        self.aln_qual = aln_qual
+        self.snps = snps
+        self.raw = raw
+    def format_aln(self, width = None, qual = False):
         strs = []
-        strs.append(self._a + " ({0} sequences)".format(self.size()))
-        strs.append('\t'.join(['name', 'start', 'alnSize', 'strand', 'seqSize', 'alignment']))
-        strs += ['\t'.join([str(x) for x in self.get(i)]) for i in range(self.size())]
+        if(width == None):
+            width = len(self.aln_chr)
+        for batch in xrange(int((len(self.aln_chr) + width - 1) / width)):            
+            strs.append(self.aln_seq[batch * width : (batch + 1) * width])
+            strs.append(self.aln_chr[batch * width : (batch + 1) * width])
+            strs.append(self.aln_ref[batch * width : (batch + 1) * width])
+            if(qual):
+                strs.append(self.aln_qual[batch * width : (batch + 1) * width])            
+            strs.append('')
         return('\n'.join(strs))
+    def format_snps(self):
+        strs = []
+        strs.append('\t'.join(['pos', 'ref', 'read']))
+        strs.append('\n'.join('\t'.join(l) for l in 
+                              [[str(i[0] + self.aln_start), i[1], i[2]] for i in self.snps]))
+        return('\n'.join(strs))
+    
+    def counts(self, c):
+        return(self.counts_high_q[c] + self.counts_low_q[c])        
+    def format_count(self, qscore = False):
+        if(qscore):
+            return('\t'.join(sum([[i[0], i[1]] for i in 
+                                  zip(["{:6d}".format(self.counts_high_q[c]) 
+                                       for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']], 
+                                      ["{:6d}".format(self.counts_low_q[c]) 
+                                       for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']])
+                                 ], [])))            
+        else:
+            return('\t'.join(["{:6d}".format(self.counts(c)) 
+                              for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']]))
 
-def count_main(maf_file, out_file, debug):
-    entry = None
+def format_counts(list, qscore_t = None):
     strs = []
-    strs.append('\t'.join(['match', 'mismatch', 'insertion', 'deletion',
-                           'ref_name', 'ref_start', 'ref_alnSize', 'ref_strand', 'ref_seqSize',
-                           'tar_name', 'tar_start', 'tar_alnSize', 'tar_strand', 'tar_seqSize']))
-
-    for l in maf_file:
-        if((not l.startswith('#')) and len(l.strip()) > 0):
-            if(l.startswith('a')):
-                if(entry != None):
-                    strs.append('\t'.join([str(x) for x in entry.count(ref_id=0, tar_id=1)]))
-                entry = maf_item(l[2:])
-            elif(l.startswith('s')):
-                entry.append(l.split()[1:])
-            else:
-                splitted_line = l.split()
-                entry.add_field(splitted_line[0], ' '.join(splitted_line[1:]))
-    if(entry != None):
-        strs.append('\t'.join([str(x) for x in entry.count(ref_id=0, tar_id=1)]))
-
-    if(out_file != None):
-        with open(out_file, 'w') as f:
-            f.write('\n'.join(strs))
+    if(qscore_t != None):
+        strs.append('\t'.join(["{:>6}\t".format(c) 
+                    for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']]))
+        strs.append('\t'.join(['>={:2d}'.format(qscore_t), '<{:2d}'.format(qscore_t)] * 8))
+        return('\n'.join(strs + [i.format_count(True) for i in list]))
     else:
-        print('\n'.join(strs))
+        strs.append('\t'.join(["{:>6}".format(c) 
+                               for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']]))
+        return('\n'.join(strs + [i.format_count(False) for i in list]))
+
+def get_counts_main(sam_f, reference, gap_char = '_', qval_thr = 20):
+    entries = read_sam(sam_f)
+    data = [process_entry(e, reference, gap_char, qval_thr) for e in entries]
+    return(data)
 
 def main():
-    # This function serves as a parser
-    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
-                                     description=_README_)
-    parser.add_argument('-i', metavar='i', type=argparse.FileType('r'),
-                        #default = None,
-                        help='input file (maf format)')
-    parser.add_argument('-o', metavar='o', # type=argparse.FileType('w'),
-                        default = None, 
-                        help='output file name (default = stdout)')
-    parser.add_argument('--debug', action = 'store_const',
-                        const=True, default = False,
-                        help='debug mode (***)')
-    parser.add_argument('--version', action='version', version='%(prog)s 2016-10-28')
+    sam_f = '/home/ytanigaw/data/nanopore/20161008_wgs_caucasian_48hr.10k.bwa.mapq60.20kb.chr11.sam.body'
+    ref_f = '/share/PI/mrivas/data/hg19/hg19.fa'
+    hg19 = pysam.FastaFile(ref_f)
     
-    args = parser.parse_args()
-
-    count_main(args.i, args.o, args.debug)
+    data = get_counts_main(sam_f, hg19, gap_char = '_', qval_thr = 20)
+    
+    print format_counts(data, qscore_t = 20)
     
 if __name__ == "__main__":
     main()

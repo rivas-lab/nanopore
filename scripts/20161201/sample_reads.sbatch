@@ -12,9 +12,11 @@
 #################
 
 DIR=${PI_HOME}/data/giab/NA12878_PacBio_MtSinai
-BAM=${DIR}/sorted_final_merged
+BAM=${DIR}/sorted_final_merged.15kb
 OUT=${BAM}.sample
 PROG=/home/ytanigaw/projects/nanopore/src/sample_reads.pl
+
+ml load perl
 
 samtools view ${BAM}.bam \
     | ${PROG} 1804275 100 20161201 > ${OUT}.sam
