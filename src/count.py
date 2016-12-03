@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 
+import fileinput, argparse
 import pysam
 
 _README_ = '''
@@ -8,15 +9,22 @@ count match/mismatches from sam file
 -------------------------------------------------------------------------
 '''
 
-def read_sam(sam_f, sep = None):
+def read_sam(sam_f = None, sep = None):
     '''
     read a sam file. assumes there is no header component.
     '''
-    with open(sam_f, 'r') as f:
+    if(sam_f != None):
+        with open(sam_f, 'r') as f:
+            if(sep != None):
+                entries = [line.strip().split(sep) for line in f]
+            else:
+                entries = [line.strip().split() for line in f]
+    else:            
         if(sep != None):
-            entries = [line.strip().split(sep) for line in f]
+            entries = [line.strip().split(sep) for line in fileinput.input()]
         else:
-            entries = [line.strip().split() for line in f]
+            entries = [line.strip().split() for line in fileinput.input()]
+
     return(entries)
 
 def parse_cigar(cigar):
@@ -58,51 +66,55 @@ def retrieve_alignment(seq, ref, qual, cigar_list,
     q_thr = str(unichr(33 + qval_thr))
     for i in xrange(len(cigar_list)):
         if(cigar_list[i][1] == 'M'):
-            aln_qual.append(qual[ptr_seq : ptr_seq + cigar_list[i][0]])
+            if(qual != "*"):
+                aln_qual.append(qual[ptr_seq : ptr_seq + cigar_list[i][0]])
             for j in xrange(cigar_list[i][0]):
                 aln_seq.append(seq[ptr_seq])
                 aln_ref.append(ref[ptr_ref])
                 if(seq[ptr_seq].upper() == ref[ptr_ref].upper()):
                     aln_chr.append('=')
-                    if(q_thr <= qual[ptr_seq]):
-                        counts_high_q['='] = counts_high_q['='] + 1
-                    else:
+                    if(qual != "*" and q_thr > qual[ptr_seq]):
                         counts_low_q['='] = counts_low_q['='] + 1
+                    else:
+                        counts_high_q['='] = counts_high_q['='] + 1
                 else:
                     aln_chr.append('X')
-                    if(q_thr <= qual[ptr_seq]):
+                    if(qual != "*" and q_thr > qual[ptr_seq]):
+                        counts_low_q['X'] = counts_low_q['X'] + 1                
+                    else:
                         counts_high_q['X'] = counts_high_q['X'] + 1
                         snps.append((ptr_ref, ref[ptr_ref], seq[ptr_seq]))
-                    else:
-                        counts_low_q['X'] = counts_low_q['X'] + 1                
                 ptr_seq = ptr_seq + 1
                 ptr_ref = ptr_ref + 1
         elif(cigar_list[i][1] == 'I'):
-            aln_qual.append(qual[ptr_seq : ptr_seq + cigar_list[i][0]])
+            if(qual != "*"):
+                aln_qual.append(qual[ptr_seq : ptr_seq + cigar_list[i][0]])
             aln_seq.append(seq[ptr_seq : ptr_seq + cigar_list[i][0]])
             for j in xrange(cigar_list[i][0]):
-                if(q_thr <= qual[ptr_seq]):
-                    counts_high_q['I'] = counts_high_q['I'] + 1
-                else:
+                if(qual != "*" and q_thr > qual[ptr_seq]):
                     counts_low_q['I'] = counts_low_q['I'] + 1
+                else:
+                    counts_high_q['I'] = counts_high_q['I'] + 1                    
                 ptr_seq = ptr_seq + 1
             aln_ref.append(gap_char * cigar_list[i][0])    
             aln_chr.append('I' * cigar_list[i][0])    
-        elif(cigar_list[i][1] == 'D'):    
-            aln_qual.append(' ' * cigar_list[i][0])
+        elif(cigar_list[i][1] == 'D'):
+            if(qual != "*"):
+                aln_qual.append(' ' * cigar_list[i][0])
             aln_seq.append(gap_char * cigar_list[i][0])
             aln_ref.append(ref[ptr_ref : ptr_ref + cigar_list[i][0]])
             ptr_ref = ptr_ref + cigar_list[i][0]
             aln_chr.append('D' * cigar_list[i][0])    
             counts_high_q['D'] = counts_high_q['D'] + cigar_list[i][0]                                           
         else:
-            aln_qual.append(qual[ptr_seq : ptr_seq + cigar_list[i][0]])
+            if(qual != "*"):
+                aln_qual.append(qual[ptr_seq : ptr_seq + cigar_list[i][0]])
             aln_seq.append(seq[ptr_seq : ptr_seq + cigar_list[i][0]])
             for j in xrange(cigar_list[i][0]):
-                if(q_thr <= qual[ptr_seq]):
-                    counts_high_q[cigar_list[i][1]] = counts_high_q[cigar_list[i][1]] + 1
-                else:
+                if(qual != "*" and q_thr > qual[ptr_seq]):
                     counts_low_q[cigar_list[i][1]] = counts_low_q[cigar_list[i][1]] + 1
+                else:                    
+                    counts_high_q[cigar_list[i][1]] = counts_high_q[cigar_list[i][1]] + 1
                 ptr_seq = ptr_seq + 1            
             aln_ref.append(ref[ptr_ref : ptr_ref + cigar_list[i][0]])
             ptr_ref = ptr_ref + cigar_list[i][0]
@@ -195,13 +207,27 @@ def get_counts_main(sam_f, reference, gap_char = '_', qval_thr = 20):
     return(data)
 
 def main():
-    sam_f = '/home/ytanigaw/data/nanopore/20161008_wgs_caucasian_48hr.10k.bwa.mapq60.20kb.chr11.sam.body'
-    ref_f = '/share/PI/mrivas/data/hg19/hg19.fa'
-    hg19 = pysam.FastaFile(ref_f)
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     description=_README_)
+    parser.add_argument('ref', metavar='r',
+                        help='reference file (hg19.fa)')
+    parser.add_argument('-i', metavar='i',
+                        default = None,
+                        help='input sam file (without header lines)')
+    parser.add_argument('-q', metavar='q',
+                        default = None,
+                        help='q value threshold')
     
-    data = get_counts_main(sam_f, hg19, gap_char = '_', qval_thr = 20)
+    args = parser.parse_args()
     
-    print format_counts(data, qscore_t = 20)
+    ref = pysam.FastaFile(args.ref)
+    data = get_counts_main(args.i, ref, gap_char = '_', 
+                           qval_thr = 20 if args.q == None else args.q)
+    
+    if(args.q != None):
+        print format_counts(data, qscore_t = 20)
+    else:
+        print format_counts(data)
     
 if __name__ == "__main__":
     main()
