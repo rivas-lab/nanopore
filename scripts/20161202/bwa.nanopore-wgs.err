@@ -1,31 +1,9 @@
-
-Usage:   samtools view [options] <in.bam>|<in.sam> [region1 [...]]
-
-Options: -b       output BAM
-         -h       print header for the SAM output
-         -H       print header only (no alignments)
-         -S       input is SAM
-         -u       uncompressed BAM output (force -b)
-         -1       fast compression (force -b)
-         -x       output FLAG in HEX (samtools-C specific)
-         -X       output FLAG in string (samtools-C specific)
-         -c       print only the count of matching records
-         -B       collapse the backward CIGAR operation
-         -@ INT   number of BAM compression threads [0]
-         -L FILE  output alignments overlapping the input BED FILE [null]
-         -t FILE  list of reference names and lengths (force -S) [null]
-         -T FILE  reference sequence file (force -S) [null]
-         -o FILE  output file name [stdout]
-         -R FILE  list of read groups to be outputted [null]
-         -f INT   required flag, 0 for unset [0]
-         -F INT   filtering flag, 0 for unset [0]
-         -q INT   minimum mapping quality [0]
-         -l STR   only output reads in library STR [null]
-         -r STR   only output reads in read group STR [null]
-         -s FLOAT fraction of templates to subsample; integer part as seed [-1]
-         -?       longer help
-
 [M::bwa_idx_load_from_disk] read 0 ALT contigs
 [M::process] read 254 sequences (10020580 bp)...
 [M::process] read 344 sequences (10003120 bp)...
-[M::mem_process_seqs] Processed 254 reads in 1455.230 CPU sec, 1454.898 real sec
+[M::mem_process_seqs] Processed 254 reads in 1327.887 CPU sec, 1328.797 real sec
+[M::process] read 346 sequences (10051084 bp)...
+[M::mem_process_seqs] Processed 344 reads in 1885.274 CPU sec, 1884.884 real sec
+[M::process] read 336 sequences (10059570 bp)...
+slurmstepd: error: *** JOB 11108314 ON sh-5-10 CANCELLED AT 2016-12-02T15:50:22 DUE TO TIME LIMIT ***
+slurmstepd: error: Exceeded step memory limit at some point.
