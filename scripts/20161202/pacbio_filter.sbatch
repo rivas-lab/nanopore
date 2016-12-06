@@ -15,7 +15,7 @@ ml load anaconda
 source activate pgenlib
 
 COUNT=${HOME}/projects/nanopore/src/count.py
-BAM=/share/PI/mrivas/data/giab/NA12878_PacBio_MtSinai/sorted_final_merged.15kb
+BAM=/share/PI/mrivas/data/giab/NA12878_PacBio_MtSinai/sorted_final_merged.10kb
 REF=/share/PI/mrivas/data/hg19/hg19.fa
 
 cat <(samtools view -H ${BAM}.bam) \
