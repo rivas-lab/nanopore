@@ -9,24 +9,6 @@ count match/mismatches from sam file
 -------------------------------------------------------------------------
 '''
 
-def read_sam(sam_f = None, sep = None):
-    '''
-    read a sam file. assumes there is no header component.
-    '''
-    if(sam_f != None):
-        with open(sam_f, 'r') as f:
-            if(sep != None):
-                entries = [line.strip().split(sep) for line in f]
-            else:
-                entries = [line.strip().split() for line in f]
-    else:            
-        if(sep != None):
-            entries = [line.strip().split(sep) for line in fileinput.input()]
-        else:
-            entries = [line.strip().split() for line in fileinput.input()]
-
-    return(entries)
-
 def parse_cigar(cigar):
     '''
     parse CIGAR string and return them as list of 2-tupples and
@@ -189,9 +171,9 @@ class sam_entry:
             return('\t'.join(["{:6d}".format(self.counts(c)) 
                               for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']]))
                
-def format_counts_head(qscore_t = None):
+def format_counts_head(qscore_t = -1):
     strs = []
-    if(qscore_t != None):
+    if(qscore_t >= 0):
         strs.append('\t'.join(["{:>6}\t".format(c) 
                     for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']]))
         strs.append('\t'.join(['>={:2d}'.format(qscore_t), '<{:2d}'.format(qscore_t)] * 8))
@@ -200,21 +182,12 @@ def format_counts_head(qscore_t = None):
                                for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']]))        
     return('\n'.join(strs))            
 
-
-def get_counts_main(sam_f, reference, gap_char = '_', qval_thr = 20):
-    entries = read_sam(sam_f)
-    data = [process_entry(e, reference, gap_char, qval_thr) for e in entries]
-    return(data)
-
-def show_counts_main(sam_f, ref, gap_char = '_', qval_thr = 20):
+def show_counts_main(sam_f, ref, gap_char = '_', qval_thr = -1):
     with open(sam_f, 'r') as f:
         for line in f:
             entry = line.strip().split()
             data = process_entry(entry, ref, gap_char, qval_thr)
-            if(qval_thr != None):
-                print data.format_count(True)
-            else:
-                print data.format_count(False)
+            print data.format_count(qval_thr >= 0)
                 
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -224,28 +197,22 @@ def main():
     parser.add_argument('-i', metavar='i',
                         default = None,
                         help='input sam file (without header lines)')
-    parser.add_argument('-q', metavar='q',
-                        default = None,
-                        help='q value threshold')
+    parser.add_argument('-q', metavar='q', type=int,
+                        default = -1,
+                        help='Base call Q-score threshold')
+    parser.add_argument('-g', metavar='g',
+                        default = '_',
+                        help="gap char (default: '_')")
+
     
     args = parser.parse_args()
-    ref = pysam.FastaFile(args.ref)
 
-    print format_counts_head(qscore_t = 20 if args.q == None else args.q)
-   
-    show_counts_main(args.i, ref, gap_char = '_', 
-                     qval_thr = 20 if args.q == None else args.q)
+    print format_counts_head()
+    show_counts_main(sam_f = args.i, 
+                     ref = pysam.FastaFile(args.ref),
+                     gap_char = '_',
+                     qval_thr = args.q)
 
-#    data = get_counts_main(args.i, ref, gap_char = '_', 
-#                           qval_thr = 20 if args.q == None else args.q)
-#    
-#
-#    if(args.q != None):
-#        print '\n'.join([i.format_count(True) for i in data])
-#    else:
-#        print '\n'.join([i.format_count(False) for i in data])        
-        
-        
 if __name__ == "__main__":
     main()
     
