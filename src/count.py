@@ -158,7 +158,9 @@ class sam_entry:
         return('\n'.join(strs))
     
     def counts(self, c):
-        return(self.counts_high_q[c] + self.counts_low_q[c])        
+        return(self.counts_high_q[c] + self.counts_low_q[c])  
+    def mismatch_rate(self):
+        return(1.0 * self.counts('X') / (self.counts('=') + self.counts('X')))
     def format_count(self, qscore = False, showname = False):
         if(qscore):
             return('\t'.join(([self.name] if showname else []) +
@@ -194,7 +196,21 @@ def show_counts_main(sam_f, ref, gap_char = '_', qval_thr = -1, showname = False
                 # if it is not a supplementary alignment
                 data = process_entry(entry, ref, gap_char, qval_thr)
             print data.format_count(qval_thr >= 0, showname)
-                
+
+def extract_main(sam_f, ref, gap_char = '_', qval_thr = -1,
+                 min_len = 10000, max_mismatch_rate = 0.1):
+    with open(sam_f, 'r') as f:
+        for line in f:
+            entry = line.strip().split()
+            if(((int(entry[1]) >> 11) % 2) == 0):
+                # if it is not a supplementary alignment
+                data = process_entry(entry, ref, gap_char, qval_thr)
+                if(data.seq_len >= min_len and
+                   data.mismatch_rate <= max_mismatch_rate):
+                    print "\t".join([str(x) for x in ["T", data.seq_len, data.mismatch_rate()]] + entry)        
+                else:
+                    print "\t".join([str(x) for x in ["F", data.seq_len, data.mismatch_rate()]] + entry)        
+            
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                      description=_README_)
@@ -212,15 +228,28 @@ def main():
     parser.add_argument('--showname', action = 'store_const',
                         const=True, default = False,
                         help= 'print name of the sequence') 
+
+    parser.add_argument('--extract', action = 'store_const',
+                        const=True, default = False,
+                        help= 'extract useful reads') 
+
     
     args = parser.parse_args()
-
-    print format_counts_head(qscore_t = args.q, showname = args.showname)
-    show_counts_main(sam_f = args.i, 
+    
+    if(args.extract):
+        extract_main(sam_f = args.i, 
                      ref = pysam.FastaFile(args.ref),
-                     gap_char = '_',
-                     qval_thr = args.q,
-                     showname = args.showname)
+                     gap_char = args.g,
+                     qval_thr = args.q,                     
+                     min_len = 10000, 
+                     max_mismatch_rate = 0.1)
+    else:
+        print format_counts_head(qscore_t = args.q, showname = args.showname)
+        show_counts_main(sam_f = args.i, 
+                         ref = pysam.FastaFile(args.ref),
+                         gap_char = args.g,
+                         qval_thr = args.q,
+                         showname = args.showname)
 
 if __name__ == "__main__":
     main()
