@@ -117,7 +117,7 @@ def process_entry(e, reference, gap_char = '_', qval_thr = 20):
                        qual = e[10],
                        cigar_list = cigar_list, 
                        gap_char = gap_char)
-    return(sam_entry(e[2], int(e[3]), int(e[3]) + ptr_ref, len(e[9]), 
+    return(sam_entry(e[0], int(e[3]), int(e[3]) + ptr_ref, len(e[9]), 
                      counts_high_q, counts_low_q, qval_thr, 
                      aln_seq, aln_ref, aln_chr, aln_qual, snps, e))
 
@@ -159,35 +159,41 @@ class sam_entry:
     
     def counts(self, c):
         return(self.counts_high_q[c] + self.counts_low_q[c])        
-    def format_count(self, qscore = False):
+    def format_count(self, qscore = False, showname = False):
         if(qscore):
-            return('\t'.join(sum([[i[0], i[1]] for i in 
+            return('\t'.join(([self.name] if showname else []) +
+                             sum([[i[0], i[1]] for i in 
                                   zip(["{:6d}".format(self.counts_high_q[c]) 
                                        for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']], 
                                       ["{:6d}".format(self.counts_low_q[c]) 
                                        for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']])
                                  ], [])))            
         else:
-            return('\t'.join(["{:6d}".format(self.counts(c)) 
+            return('\t'.join(([self.name] if showname else []) + 
+                             ["{:6d}".format(self.counts(c)) 
                               for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']]))
                
-def format_counts_head(qscore_t = -1):
+def format_counts_head(qscore_t = -1, showname = False):
     strs = []
     if(qscore_t >= 0):
-        strs.append('\t'.join(["{:>6}\t".format(c) 
+        strs.append('\t'.join((["name"] if showname else []) + 
+                              ["{:>6}\t".format(c) 
                     for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']]))
-        strs.append('\t'.join(['>={:2d}'.format(qscore_t), '<{:2d}'.format(qscore_t)] * 8))
+        strs.append('\t'.join(([""] if showname else []) + ['>={:2d}'.format(qscore_t), '<{:2d}'.format(qscore_t)] * 8))
     else:
-        strs.append('\t'.join(["{:>6}".format(c) 
+        strs.append('\t'.join((["name"] if showname else []) + 
+                              ["{:>6}".format(c) 
                                for c in ['=', 'X', 'I', 'D', 'N', 'S', 'H', 'P']]))        
     return('\n'.join(strs))            
 
-def show_counts_main(sam_f, ref, gap_char = '_', qval_thr = -1):
+def show_counts_main(sam_f, ref, gap_char = '_', qval_thr = -1, showname = False):
     with open(sam_f, 'r') as f:
         for line in f:
             entry = line.strip().split()
-            data = process_entry(entry, ref, gap_char, qval_thr)
-            print data.format_count(qval_thr >= 0)
+            if(((int(entry[1]) >> 11) % 2) == 0):
+                # if it is not a supplementary alignment
+                data = process_entry(entry, ref, gap_char, qval_thr)
+            print data.format_count(qval_thr >= 0, showname)
                 
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -203,15 +209,18 @@ def main():
     parser.add_argument('-g', metavar='g',
                         default = '_',
                         help="gap char (default: '_')")
-
+    parser.add_argument('--showname', action = 'store_const',
+                        const=True, default = False,
+                        help= 'print name of the sequence') 
     
     args = parser.parse_args()
 
-    print format_counts_head()
+    print format_counts_head(qscore_t = args.q, showname = args.showname)
     show_counts_main(sam_f = args.i, 
                      ref = pysam.FastaFile(args.ref),
                      gap_char = '_',
-                     qval_thr = args.q)
+                     qval_thr = args.q,
+                     showname = args.showname)
 
 if __name__ == "__main__":
     main()
