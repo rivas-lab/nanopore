@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-import fileinput, argparse
+import fileinput, argparse, sys
 import pysam
 
 _README_ = '''
@@ -198,19 +198,45 @@ def show_counts_main(sam_f, ref, gap_char = '_', qval_thr = -1, showname = False
             print data.format_count(qval_thr >= 0, showname)
 
 def extract_main(sam_f, ref, gap_char = '_', qval_thr = -1,
-                 min_len = 10000, max_mismatch_rate = 0.1):
-    with open(sam_f, 'r') as f:
-        for line in f:
-            entry = line.strip().split()
-            if(((int(entry[1]) >> 11) % 2) == 0):
-                # if it is not a supplementary alignment
-                data = process_entry(entry, ref, gap_char, qval_thr)
-                if(data.seq_len >= min_len and
-                   data.mismatch_rate <= max_mismatch_rate):
-                    print "\t".join([str(x) for x in ["T", data.seq_len, data.mismatch_rate()]] + entry)        
-                else:
-                    print "\t".join([str(x) for x in ["F", data.seq_len, data.mismatch_rate()]] + entry)        
-            
+                 min_len = 10000, max_mismatch_rate = 0.1,
+                 outfile = None, errfile = None):
+  if outfile is None:
+      out = sys.stdout
+  else:
+      out = open(outfile, 'w')
+
+  if errfile is None:
+      err = sys.stderr
+  else:
+      err = open(errfile, 'w')
+
+      
+  with open(sam_f, 'r') as f:          
+      for line in f:
+          entry = line.strip().split()
+          if(((int(entry[1]) >> 11) % 2) == 0):
+              # if it is not a supplementary alignment
+              try:
+                  data = process_entry(entry, ref, gap_char, qval_thr)
+              except IndexError as e:
+                  sys.stderr.write("Index Error\n")
+                  err.write(line)
+              except:
+                  print "Unexpected error:", sys.exc_info()[0]
+                  raise
+              else:
+                  if(data.seq_len >= min_len and
+                     data.mismatch_rate() <= max_mismatch_rate):
+                      out.write(line)
+                      #out.write("\t".join([str(x) for x in
+                      #                     ["T", data.seq_len, data.mismatch_rate()]]
+                      #                    + entry) + '\n')
+                  #else:
+                  #    out.write("\t".join([str(x) for x in
+                  #                         ["F", data.seq_len, data.mismatch_rate()]]
+                  #                        + entry) + '\n')
+                      
+                
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                      description=_README_)
@@ -219,6 +245,12 @@ def main():
     parser.add_argument('-i', metavar='i',
                         default = None,
                         help='input sam file (without header lines)')
+    parser.add_argument('-o', metavar='o',
+                        default = None,
+                        help='output file')
+    parser.add_argument('-e', metavar='e',
+                        default = None,
+                        help='error sam file (without header lines)')
     parser.add_argument('-q', metavar='q', type=int,
                         default = -1,
                         help='Base call Q-score threshold')
@@ -242,7 +274,9 @@ def main():
                      gap_char = args.g,
                      qval_thr = args.q,                     
                      min_len = 10000, 
-                     max_mismatch_rate = 0.1)
+                     max_mismatch_rate = 0.1,
+                     outfile = args.o,
+                     errfile = args.e)
     else:
         print format_counts_head(qscore_t = args.q, showname = args.showname)
         show_counts_main(sam_f = args.i, 
