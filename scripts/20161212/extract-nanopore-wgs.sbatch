@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=count-nanopore-wgs
-#SBATCH   --output=count-nanopore-wgs.out
-#SBATCH    --error=count-nanopore-wgs.err
+#SBATCH --job-name=extract-nanopore-wgs
+#SBATCH   --output=extract-nanopore-wgs.out
+#SBATCH    --error=extract-nanopore-wgs.err
 #SBATCH --time=1:00:00
 #SBATCH --qos=normal
 #SBATCH -p normal
