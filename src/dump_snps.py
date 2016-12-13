@@ -17,9 +17,9 @@ def main():
                         help='reference file (hg19.fa)')
     parser.add_argument('-i', metavar='i', type = file, default = sys.stdin,
                         help='input sam file (without header lines)')
-    parser.add_argument('-o', metavar='o', type = file, default = sys.stdout,
+    parser.add_argument('-o', metavar='o', type = argparse.FileType('w'), default = sys.stdout,
                         help='output file')
-    parser.add_argument('-e', metavar='e', type = file, default = sys.stderr,
+    parser.add_argument('-e', metavar='e', type = argparse.FileType('w'), default = sys.stderr,
                         help='error sam file (without header lines)')
     parser.add_argument('-q', metavar='q', type=int, default = -1,
                         help='Base call Q-score threshold')
