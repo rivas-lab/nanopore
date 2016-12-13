@@ -260,7 +260,10 @@ def main_extract(sam_f, ref, gap_char = '_', qval_thr = -1,
 
 def main_dump_snps(in_f, out, err, ref, 
                    gap_char = '_', qval_thr = -1, showname = False): 
-    out.write('\t'.join(['name', 'snps([<pos>,<ref>,<seq>;]+)']) + '\n')
+    if(showname):
+        out.write('\t'.join(['name', 'snps([<pos>,<ref>,<seq>;]+)']) + '\n')
+    else:
+        out.write("snps([<pos>,<ref>,<seq>;]+)\n")
     for line in in_f:
         entry = line.strip().split()
         if(((int(entry[1]) >> 11) % 2) == 0):
@@ -275,5 +278,7 @@ def main_dump_snps(in_f, out, err, ref,
                 raise
             else:
                 if(len(data.snps) > 0):
-                    #out.write(data.qname + data.rname +str(data.snps) + '\n')
-                    out.write('\t'.join([data.qname, str(data.format_snps())]) + '\n')
+                    if(showname):
+                        out.write('\t'.join([data.qname, str(data.format_snps())]) + '\n')
+                    else:
+                        out.write(str(data.format_snps()) + '\n')

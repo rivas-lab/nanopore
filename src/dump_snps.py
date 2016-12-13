@@ -26,16 +26,18 @@ def main():
     parser.add_argument('-g', metavar='g',
                         default = '_',
                         help="gap char (default: '_')")
+    parser.add_argument('--showname', action = 'store_const',
+                        const=True, default = False,
+                        help= 'print name of the sequence') 
 
     
     args = parser.parse_args()
-    
     
     main_dump_snps(in_f = args.i, out = args.o, err = args.e, 
                    ref = pysam.FastaFile(args.ref),
                    gap_char = args.g,
                    qval_thr = args.q,                     
-                   showname = False)
+                   showname = args.showname)
 
 if __name__ == "__main__":
     main()
