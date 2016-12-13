@@ -111,7 +111,8 @@ def process_entry(e, reference, gap_char = '_', qval_thr = 20):
     process one line in a sam file and returns an object of sam_entry class
     '''
     cigar_list, ref_len = parse_cigar(e[5])
-    (aln_seq, aln_ref, aln_chr, aln_qual, ptr_ref, counts_high_q, counts_low_q, snps) = \
+    (aln_seq, aln_ref, aln_chr, aln_qual, ptr_ref, 
+     counts_high_q, counts_low_q, snps) = \
     retrieve_alignment(seq = e[9],
                        ref = reference.fetch(reference = e[2],
                                              start = int(e[3]) - 1, 
@@ -119,15 +120,16 @@ def process_entry(e, reference, gap_char = '_', qval_thr = 20):
                        qual = e[10],
                        cigar_list = cigar_list, 
                        gap_char = gap_char)
-    return(sam_entry(e[0], int(e[3]), int(e[3]) + ptr_ref, len(e[9]), 
+    return(sam_entry(e[0], e[2], int(e[3]), int(e[3]) + ptr_ref, len(e[9]), 
                      counts_high_q, counts_low_q, qval_thr, 
                      aln_seq, aln_ref, aln_chr, aln_qual, snps, e))
 
 class sam_entry:
-    def __init__(self, name, aln_start, aln_end, seq_len,
+    def __init__(self, qname, rname, aln_start, aln_end, seq_len,
                  counts_high_q, counts_low_q, qscore_t,
                  aln_seq, aln_ref, aln_chr, aln_qual, snps, raw):
-        self.name = name
+        self.qname = qname
+        self.rname = rname        
         self.aln_start = aln_start
         self.aln_end = aln_end
         self.seq_len = seq_len
@@ -154,9 +156,9 @@ class sam_entry:
         return('\n'.join(strs))
     def format_snps(self):
         strs = []
-        strs.append('\t'.join(['pos', 'ref', 'read']))
-        strs.append('\n'.join('\t'.join(l) for l in 
-                              [[str(i[0] + self.aln_start), i[1], i[2]] for i in self.snps]))
+        strs.append(';'.join(','.join(l) for l in 
+                              [[self.rname + ':' + str(i[0] + self.aln_start), i[1], i[2]] 
+                               for i in self.snps]))
         return('\n'.join(strs))
     
     def counts(self, c):
@@ -207,10 +209,20 @@ def main_counts(sam_f, ref, gap_char = '_', qval_thr = -1, showname = False,
     with open(sam_f, 'r') as f:
         for line in f:
             entry = line.strip().split()
-            if(((int(entry[1]) >> 11) % 2) == 0):
-                # if it is not a supplementary alignment
-                data = process_entry(entry, ref, gap_char, qval_thr)
-            out.write(data.format_count(qval_thr >= 0, showname) + '\n')
+            if(((int(entry[1]) >> 11) % 2) != 0):
+                err.write("split alignment\n")
+            else:
+              # if it is not a supplementary alignment
+              try:
+                  data = process_entry(entry, ref, gap_char, qval_thr)
+              except IndexError as e:
+                  sys.stderr.write("Index Error\n")
+                  err.write(line)
+              except:
+                  print "Unexpected error:", sys.exc_info()[0]
+                  raise
+              else:            
+                out.write(data.format_count(qval_thr >= 0, showname) + '\n')
             
 
 
@@ -245,3 +257,23 @@ def main_extract(sam_f, ref, gap_char = '_', qval_thr = -1,
                   if(data.seq_len >= min_len and
                      data.mismatch_rate() <= max_mismatch_rate):
                       out.write(line)
+
+def main_dump_snps(in_f, out, err, ref, 
+                   gap_char = '_', qval_thr = -1, showname = False): 
+    out.write('\t'.join(['name', 'snps([<pos>,<ref>,<seq>;]+)']) + '\n')
+    for line in in_f:
+        entry = line.strip().split()
+        if(((int(entry[1]) >> 11) % 2) == 0):
+            # if it is not a supplementary alignment
+            try:
+                data = process_entry(entry, ref, gap_char, qval_thr)
+            except IndexError as e:
+                sys.stderr.write("Index Error\n")
+                err.write(line)
+            except:
+                print "Unexpected error:", sys.exc_info()[0]
+                raise
+            else:
+                if(len(data.snps) > 0):
+                    #out.write(data.qname + data.rname +str(data.snps) + '\n')
+                    out.write('\t'.join([data.qname, str(data.format_snps())]) + '\n')

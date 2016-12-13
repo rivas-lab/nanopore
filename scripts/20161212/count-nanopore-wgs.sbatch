@@ -18,6 +18,8 @@ data_loc="${HOME}/data/nanopore-wgs-consortium"
 name="nanopore-wgs.25000.sorted.10k.mapq50"
 ref="${PI_HOME}/data/hg19/hg19.fa"
 
-python2 ${HOME}/projects/nanopore/src/count.py \
+python2 ${HOME}/projects/nanopore/src/counts.py \
 	--showname -q 20 \
-	-i <(samtools view ${data_loc}/${name}.bam) ${ref} > ${data_loc}/${name}.count 
+	-i <(samtools view ${data_loc}/${name}.bam) \
+	-o ${data_loc}/${name}.count \
+	${ref} 

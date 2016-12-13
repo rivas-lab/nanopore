@@ -1,0 +1,41 @@
+#!/usr/bin/env python2
+
+import fileinput, argparse, sys
+import pysam
+from utils import *
+
+_README_ = '''
+-------------------------------------------------------------------------
+Show SNPs
+-------------------------------------------------------------------------
+'''
+
+def main():
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     description=_README_)
+    parser.add_argument('ref', metavar='r',
+                        help='reference file (hg19.fa)')
+    parser.add_argument('-i', metavar='i', type = file, default = sys.stdin,
+                        help='input sam file (without header lines)')
+    parser.add_argument('-o', metavar='o', type = file, default = sys.stdout,
+                        help='output file')
+    parser.add_argument('-e', metavar='e', type = file, default = sys.stderr,
+                        help='error sam file (without header lines)')
+    parser.add_argument('-q', metavar='q', type=int, default = -1,
+                        help='Base call Q-score threshold')
+    parser.add_argument('-g', metavar='g',
+                        default = '_',
+                        help="gap char (default: '_')")
+
+    
+    args = parser.parse_args()
+    
+    
+    main_dump_snps(in_f = args.i, out = args.o, err = args.e, 
+                   ref = pysam.FastaFile(args.ref),
+                   gap_char = args.g,
+                   qval_thr = args.q,                     
+                   showname = False)
+
+if __name__ == "__main__":
+    main()
