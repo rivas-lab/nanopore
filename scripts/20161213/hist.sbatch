@@ -24,6 +24,6 @@ ref="${PI_HOME}/data/hg19/hg19.fa"
 python2 ../../src/counts.py \
 	-i <(samtools view ${BAMFILE}) \
 	-q20 $ref \
-    |awk '{if(NR > 2) {print $3}}'\
+    |awk '{if(NR > 2) {print $3 + $4}}'\
     |sort -n \
     |uniq -c > ${OUTFILE}
