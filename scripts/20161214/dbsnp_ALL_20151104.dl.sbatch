@@ -12,16 +12,16 @@
 #################
 
 # Download dbSNP from FTP server
-wget -O - \
-     ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b146_GRCh37p13/VCF/All_20151104.vcf.gz \
-    | zcat - \
-    | awk '(! /^#/){ print "chr"$0 }(/^#/){ print $0 }' \
-	  > /home/ytanigaw/PI_HOME/data/dbsnp/dbsnp_all_20151104.vcf
+# wget -O - \
+#     ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b146_GRCh37p13/VCF/All_20151104.vcf.gz \
+#    | zcat - \
+#    | awk '(! /^#/){ print "chr"$0 }(/^#/){ print $0 }' \
+#	  > /home/ytanigaw/PI_HOME/data/dbsnp/dbsnp_all_20151104.vcf
 
 # compress
-bgzip -c - \
-        /home/ytanigaw/PI_HOME/data/dbsnp/dbsnp_all_20151104.vcf \
-      > /home/ytanigaw/PI_HOME/data/dbsnp/dbsnp_all_20151104.vcf.gz
+bgzip \
+      /home/ytanigaw/PI_HOME/data/dbsnp/dbsnp_all_20151104.vcf \
+    > /home/ytanigaw/PI_HOME/data/dbsnp/dbsnp_all_20151104.vcf.gz
 
 # index the table file
 tabix -p vcf \

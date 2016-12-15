@@ -1,0 +1,2 @@
+[bgzip] /home/ytanigaw/PI_HOME/data/dbsnp/dbsnp_all_20151104.vcf.gz already exists; do you wish to overwrite (y or n)? [bgzip] not overwritten
+[tabix] was bgzip used to compress this file? /home/ytanigaw/PI_HOME/data/dbsnp/dbsnp_all_20151104.vcf.gz
