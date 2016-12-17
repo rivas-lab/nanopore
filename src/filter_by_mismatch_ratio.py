@@ -15,33 +15,28 @@ def main():
                                      description=_README_)
     parser.add_argument('ref', metavar='r',
                         help='reference file (hg19.fa)')
-    parser.add_argument('-i', metavar='i',
-                        default = None,
+    parser.add_argument('-i', metavar='i', type = file, default = sys.stdin,
                         help='input sam file (without header lines)')
-    parser.add_argument('-o', metavar='o',
-                        default = None,
+    parser.add_argument('-o', metavar='o', type = argparse.FileType('w'),
+                        default = sys.stdout,
                         help='output file')
-    parser.add_argument('-e', metavar='e',
-                        default = None,
+    parser.add_argument('-e', metavar='e', type = argparse.FileType('w'),
+                        default = sys.stderr,
                         help='error sam file (without header lines)')
-    parser.add_argument('-q', metavar='q', type=int,
-                        default = -1,
-                        help='Base call Q-score threshold')
-    parser.add_argument('-g', metavar='g',
-                        default = '_',
-                        help="gap char (default: '_')")
-
-    
+    parser.add_argument('-l', metavar='l', type=int,
+                        default = 10000,
+                        help='minimum length (default: 10000)')
+    parser.add_argument('-m', metavar='m', type=float,
+                        default = 0.1,
+                        help='maximum mismatch ratio (default: 0.1)')    
     args = parser.parse_args()
     
-    main_extract(sam_f = args.i, 
+    main_extract(in_f = args.i,
+                 out = args.o,
+                 err = args.e,
                  ref = pysam.FastaFile(args.ref),
-                 gap_char = args.g,
-                 qval_thr = args.q,                     
-                 min_len = 10000, 
-                 max_mismatch_rate = 0.1,
-                 outfile = args.o,
-                 errfile = args.e)
+                 min_len = args.l, 
+                 max_mismatch_rate = args.m)
 
 if __name__ == "__main__":
     main()

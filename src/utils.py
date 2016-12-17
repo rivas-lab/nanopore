@@ -226,37 +226,24 @@ def main_counts(sam_f, ref, gap_char = '_', qval_thr = -1, showname = False,
             
 
 
-def main_extract(sam_f, ref, gap_char = '_', qval_thr = -1,
-                 min_len = 10000, max_mismatch_rate = 0.1,
-                 outfile = None, errfile = None):
-  if outfile is None:
-      out = sys.stdout
-  else:
-      out = open(outfile, 'w')
-
-  if errfile is None:
-      err = sys.stderr
-  else:
-      err = open(errfile, 'w')
-
-      
-  with open(sam_f, 'r') as f:          
-      for line in f:
-          entry = line.strip().split()
-          if(((int(entry[1]) >> 11) % 2) == 0):
-              # if it is not a supplementary alignment
-              try:
-                  data = process_entry(entry, ref, gap_char, qval_thr)
-              except IndexError as e:
-                  sys.stderr.write("Index Error\n")
-                  err.write(line)
-              except:
-                  print "Unexpected error:", sys.exc_info()[0]
-                  raise
-              else:
-                  if(data.seq_len >= min_len and
-                     data.mismatch_rate() <= max_mismatch_rate):
-                      out.write(line)
+def main_extract(in_f, out, err, ref, 
+                 min_len, max_mismatch_rate):
+    for line in in_f:
+        entry = line.strip().split()
+        if(((int(entry[1]) >> 11) % 2) == 0):
+            # if it is not a supplementary alignment
+            try:
+                data = process_entry(entry, ref)
+            except IndexError as e:
+                sys.stderr.write("Index Error\n")
+                err.write(line)
+            except:
+                print "Unexpected error:", sys.exc_info()[0]
+                raise
+            else:
+                if(data.seq_len >= min_len and
+                   data.mismatch_rate() <= max_mismatch_rate):
+                    out.write(line)
 
 def main_dump_snps(in_f, out, err, ref, 
                    gap_char = '_', qval_thr = -1, showname = False): 
