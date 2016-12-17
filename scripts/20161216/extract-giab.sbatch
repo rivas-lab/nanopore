@@ -1,0 +1,45 @@
+#!/bin/bash
+#SBATCH --job-name=extract-giab
+#SBATCH   --output=extract-giab.%j.out
+#SBATCH    --error=extract-giab.%j.err
+#SBATCH --time=7-0:00:00
+#SBATCH --qos=long
+#SBATCH -p normal
+#SBATCH --nodes=1
+#SBATCH --mem=4000
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=ytanigaw@stanford.edu
+#################
+
+cat $0 1>&2
+
+#ml load anaconda
+#source activate pgenlib
+
+ml load python/2.7.5
+
+data_loc="${PI_HOME}/data/giab/NA12878_PacBio_MtSinai"
+name="sorted_final_merged.10kb"
+ref="${PI_HOME}/data/hg19/hg19.fa"
+
+# copy file
+work_dir=${SCRATCH}/tmp/${SLURM_JOB_ID}
+mkdir -p ${work_dir}
+cp ${data_loc}/${name}.bam ${work_dir}/${name}.bam 
+
+python2 ${HOME}/projects/nanopore/src/filter_by_mismatch_ratio.py \
+	-i <(samtools view ${work_dir}/${name}.bam) \
+	-o ${work_dir}/${name}.ext.sam \
+	-e ${work_dir}/${name}.err.sam \
+	-l 10000 \
+	-m 0.1 \
+	${ref}
+
+# copy file
+cp ${work_dir}/${name}.ext.sam ${data_loc}/${name}.ext.sam
+cp ${work_dir}/${name}.err.sam ${data_loc}/${name}.err.sam
+
+# delete tmp
+rm -rf ${work_dir}
+
+########################################################################

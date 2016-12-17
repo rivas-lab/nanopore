@@ -235,11 +235,17 @@ def main_extract(in_f, out, err, ref,
             try:
                 data = process_entry(entry, ref)
             except IndexError as e:
-                sys.stderr.write("Index Error\n")
-                err.write(line)
+                sys.stderr.write("IndexError\n")
+                err.write('\t'.join(["IndexError", line]))
+            except ValueError as e:
+                sys.stderr.write("ValueError\n")
+                err.write('\t'.join(["ValueError", line]))                
             except:
-                print "Unexpected error:", sys.exc_info()[0]
-                raise
+                sys.stderr.write("UnexpectedError\n")
+                sys.stderr.write("continuing...\n")
+                err.write('\t'.join(["UnexpectedError", line]))                
+                #print "Unexpected error:", sys.exc_info()[0]
+                #raise
             else:
                 if(data.seq_len >= min_len and
                    data.mismatch_rate() <= max_mismatch_rate):
@@ -258,11 +264,17 @@ def main_dump_snps(in_f, out, err, ref,
             try:
                 data = process_entry(entry, ref, gap_char, qval_thr)
             except IndexError as e:
-                sys.stderr.write("Index Error\n")
-                err.write(line)
+                sys.stderr.write("IndexError\n")
+                err.write('\t'.join(["IndexError", line]))
+            except ValueError as e:
+                sys.stderr.write("ValueError\n")
+                err.write('\t'.join(["ValueError", line]))                
             except:
-                print "Unexpected error:", sys.exc_info()[0]
-                raise
+                sys.stderr.write("UnexpectedError\n")
+                sys.stderr.write("continuing...\n")
+                err.write('\t'.join(["UnexpectedError", line]))                
+                #print "Unexpected error:", sys.exc_info()[0]
+                #raise
             else:
                 if(len(data.snps) > 0):
                     if(showname):
