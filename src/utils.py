@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-import fileinput, argparse, sys
+import fileinput, argparse, sys, subprocess
 import pysam
 
 _README_ = '''
@@ -140,7 +140,7 @@ class sam_entry:
         self.aln_ref = aln_ref
         self.aln_chr = aln_chr
         self.aln_qual = aln_qual
-        self.snps = snps
+        self.snps = [list(i) for i in snps]
         self.raw = raw
     def format_aln(self, width = None, qual = False):
         strs = []
@@ -154,11 +154,38 @@ class sam_entry:
                 strs.append(self.aln_qual[batch * width : (batch + 1) * width])            
             strs.append('')
         return('\n'.join(strs))
-    def format_snps(self):
+    def dbsnp_q(self, rname, pos1, pos2 = None, offset = 0):
+        if(pos2 is None):
+            pos2 = pos1 
+        pos1 = pos1 + offset
+        pos2 = pos2 + offset
+        return('{rname}:{pos1}-{pos2}'.format(rname = rname,
+                                              pos1 = pos1, 
+                                              pos2 = pos2))
+    def dbsnp(self, vcf_f):
+        dbsnp_res = [subprocess.check_output(["tabix", 
+                                              vcf_f, 
+                                              self.dbsnp_q(self.rname, i[0], 
+                                                           offset = self.aln_start)]).split() 
+                     for i in self.snps]       
+        return(dbsnp_res)        
+    def format_snps(self, vcf_f = None):
         strs = []
-        strs.append(';'.join(','.join(l) for l in 
-                              [[self.rname + ':' + str(i[0] + self.aln_start), i[1], i[2]] 
-                               for i in self.snps]))
+        if(vcf_f is None):
+            strs.append('|'.join(','.join(l) for l in 
+                                 [['{rname}:{pos1}'.format(rname = self.rname, 
+                                                           pos1 = i[0] + self.aln_start)] + i[1:]
+                                  for i in self.snps]))
+        else:
+            strs.append('|'.join(','.join(l) for l in 
+                                 [['{rname}:{pos1}'.format(rname = self.rname, 
+                                                           pos1 = i[0] + self.aln_start)] + i[1:] +
+                                  subprocess.check_output(["tabix", 
+                                                           vcf_f, 
+                                                           '{rname}:{pos1}-{pos2}'.format(rname = self.rname,
+                                                                                          pos1 = i[0] + self.aln_start, 
+                                                                                          pos2 = i[0] + self.aln_start)]).split()
+                                  for i in self.snps]))
         return('\n'.join(strs))
     
     def counts(self, c):
@@ -252,7 +279,8 @@ def main_extract(in_f, out, err, ref,
                     out.write(line)
 
 def main_dump_snps(in_f, out, err, ref, 
-                   gap_char = '_', qval_thr = -1, showname = False): 
+                   gap_char = '_', qval_thr = -1, showname = False, 
+                   vcf_f = None): 
     if(showname):
         out.write('\t'.join(['name', 'snps([<pos>,<ref>,<seq>;]+)']) + '\n')
     else:
@@ -278,6 +306,6 @@ def main_dump_snps(in_f, out, err, ref,
             else:
                 if(len(data.snps) > 0):
                     if(showname):
-                        out.write('\t'.join([data.qname, str(data.format_snps())]) + '\n')
+                        out.write('\t'.join([data.qname, str(data.format_snps(vcf_f))]) + '\n')
                     else:
-                        out.write(str(data.format_snps()) + '\n')
+                        out.write(str(data.format_snps(vcf_f)) + '\n')
