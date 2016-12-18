@@ -109,7 +109,7 @@ def retrieve_alignment(seq, ref, qual, cigar_list,
 def process_entry(e, reference, gap_char = '_', qval_thr = 20):
     '''
     process one line in a sam file and returns an object of sam_entry class
-    '''
+    '''           
     cigar_list, ref_len = parse_cigar(e[5])
     (aln_seq, aln_ref, aln_chr, aln_qual, ptr_ref, 
      counts_high_q, counts_low_q, snps) = \
@@ -119,11 +119,53 @@ def process_entry(e, reference, gap_char = '_', qval_thr = 20):
                                              end = int(e[3]) - 1 + ref_len),
                        qual = e[10],
                        cigar_list = cigar_list, 
-                       gap_char = gap_char)
+                       gap_char = gap_char, 
+                       qval_thr = qval_thr)
     return(sam_entry(e[0], e[2], int(e[3]), int(e[3]) + ptr_ref, len(e[9]), 
                      counts_high_q, counts_low_q, qval_thr, 
                      aln_seq, aln_ref, aln_chr, aln_qual, snps, e))
 
+class snp:
+    def __init__(self, rname, pos, ref, seq, base_call_q = -1):
+        self.rname = rname
+        self.pos = pos
+        self.ref = ref
+        self.seq = seq
+        self.base_call_q = base_call_q
+        self.var = None
+        self.dbsnp = None
+        
+    def dbsnp_lookup(self, vcf_f):
+        dbsnp = subprocess.check_output(["tabix", vcf_f, 
+                                         '{rname}:{pos1}-{pos2}'.format(rname = self.rname,
+                                                                        pos1 = self.pos, 
+                                                                        pos2 = self.pos)]).split()
+        if(len(dbsnp) > 0):
+            self.dbsnp = dbsnp
+            if(dbsnp[0] == self.rname and 
+               int(dbsnp[1]) == self.pos and
+               dbsnp[3].upper() == self.ref.upper() and
+               dbsnp[4].upper() == self.seq.upper()):
+                self.var = dbsnp[2]      
+            else:
+                self.var = '!'
+        
+    def has_hit_on_dbsnp(self):
+        return(self.var != None)
+    def has_var_id(self):
+        return(self.var != None and len(self.var) > 1)
+    
+    def __str__(self, full = False):
+        if(self.dbsnp is None):            
+            return(','.join([str(x) for x in 
+                              [self.rname, self.pos, 
+                               self.ref, self.seq, '*']]))
+        else:
+            return(','.join([str(x) for x in 
+                              [self.rname, self.pos, 
+                               self.ref, self.seq, self.var]]))
+            
+         
 class sam_entry:
     def __init__(self, qname, rname, aln_start, aln_end, seq_len,
                  counts_high_q, counts_low_q, qscore_t,
@@ -140,8 +182,16 @@ class sam_entry:
         self.aln_ref = aln_ref
         self.aln_chr = aln_chr
         self.aln_qual = aln_qual
-        self.snps = [list(i) for i in snps]
+        self.snps = [snp(rname, s[0] + aln_start, s[1], s[2]) for s in snps]
         self.raw = raw
+    def dbsnp_lookup(self, vcf_f):
+        for s in self.snps:
+            s.dbsnp_lookup(vcf_f)
+    def snp_nums(self):
+        total_num = len(self.snps)
+        has_hit_on_dbsnp = sum([int(s.has_hit_on_dbsnp()) for s in self.snps])
+        has_var_id       = sum([int(s.has_var_id()) for s in self.snps])
+        return([total_num, has_hit_on_dbsnp, has_var_id])
     def format_aln(self, width = None, qual = False):
         strs = []
         if(width == None):
@@ -154,38 +204,11 @@ class sam_entry:
                 strs.append(self.aln_qual[batch * width : (batch + 1) * width])            
             strs.append('')
         return('\n'.join(strs))
-    def dbsnp_q(self, rname, pos1, pos2 = None, offset = 0):
-        if(pos2 is None):
-            pos2 = pos1 
-        pos1 = pos1 + offset
-        pos2 = pos2 + offset
-        return('{rname}:{pos1}-{pos2}'.format(rname = rname,
-                                              pos1 = pos1, 
-                                              pos2 = pos2))
-    def dbsnp(self, vcf_f):
-        dbsnp_res = [subprocess.check_output(["tabix", 
-                                              vcf_f, 
-                                              self.dbsnp_q(self.rname, i[0], 
-                                                           offset = self.aln_start)]).split() 
-                     for i in self.snps]       
-        return(dbsnp_res)        
     def format_snps(self, vcf_f = None):
         strs = []
-        if(vcf_f is None):
-            strs.append('|'.join(','.join(l) for l in 
-                                 [['{rname}:{pos1}'.format(rname = self.rname, 
-                                                           pos1 = i[0] + self.aln_start)] + i[1:]
-                                  for i in self.snps]))
-        else:
-            strs.append('|'.join(','.join(l) for l in 
-                                 [['{rname}:{pos1}'.format(rname = self.rname, 
-                                                           pos1 = i[0] + self.aln_start)] + i[1:] +
-                                  subprocess.check_output(["tabix", 
-                                                           vcf_f, 
-                                                           '{rname}:{pos1}-{pos2}'.format(rname = self.rname,
-                                                                                          pos1 = i[0] + self.aln_start, 
-                                                                                          pos2 = i[0] + self.aln_start)]).split()
-                                  for i in self.snps]))
+        if(vcf_f is not None):
+            self.dbsnp_lookup(vcf_f)
+        strs.append(';'.join([str(s) for s in self.snps]))
         return('\n'.join(strs))
     
     def counts(self, c):
@@ -281,10 +304,11 @@ def main_extract(in_f, out, err, ref,
 def main_dump_snps(in_f, out, err, ref, 
                    gap_char = '_', qval_thr = -1, showname = False, 
                    vcf_f = None): 
+    snpstr_head = 'snps([<pos>,<ref>,<seq>,<varid>;]+)'
     if(showname):
-        out.write('\t'.join(['name', 'snps([<pos>,<ref>,<seq>;]+)']) + '\n')
+        out.write('\t'.join(['name', '#SNPs', '#SNPs_with_hits_to_dbSNP', '#SNPs_with_var_id', snpstr_head]) + '\n')
     else:
-        out.write("snps([<pos>,<ref>,<seq>;]+)\n")
+        out.write('\t'.join(['#SNPs', '#SNPs_with_hits_to_dbSNP', '#SNPs_with_var_id', snpstr_head]) + '\n')
     for line in in_f:
         entry = line.strip().split()
         if(((int(entry[1]) >> 11) % 2) == 0):
@@ -304,8 +328,9 @@ def main_dump_snps(in_f, out, err, ref,
                 #print "Unexpected error:", sys.exc_info()[0]
                 #raise
             else:
-                if(len(data.snps) > 0):
-                    if(showname):
-                        out.write('\t'.join([data.qname, str(data.format_snps(vcf_f))]) + '\n')
-                    else:
-                        out.write(str(data.format_snps(vcf_f)) + '\n')
+                snpstr = str(data.format_snps(vcf_f))
+                snp_nums = data.snp_nums()                  
+                if(showname):
+                    out.write('\t'.join([data.qname] + [str(x) for x in snp_nums] + [snpstr]) + '\n')
+                else:
+                    out.write('\t'.join([str(x) for x in snp_nums] + [snpstr]) + '\n')
