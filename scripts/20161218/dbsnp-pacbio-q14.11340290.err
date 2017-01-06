@@ -36,3 +36,4 @@ python2 ../../src/dump_snps.py $ref \
 	-s ${DBSNP} > ${OUTFILE}
 
 ####################################################################
+slurmstepd: error: *** JOB 11340290 ON sh-2-1 CANCELLED AT 2016-12-25T00:25:23 DUE TO TIME LIMIT ***
