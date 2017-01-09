@@ -153,12 +153,16 @@ class tabix_lookup:
                 if(len(entry) > 0 and 
                    entry[0]         == snp.rname and
                    int(entry[1])    == snp.pos and
-                   entry[3].upper() == snp.ref.upper() and
-                   entry[4].upper() == snp.seq.upper()):
-                    exact_match = entry
-                    break
-        return(exact_match)
-        
+                   entry[3].upper() == snp.ref.upper()):
+                    # position (and the reference letter of course) has a match
+                    alts = [alt.upper() for alt in entry[4].split(',')]                    
+                    if(snp.seq.upper() in alts):
+                        # if the letter in the read matches 
+                        # one of the alternative alles in the vcf file
+                        exact_match = entry
+                        break
+        return(exact_match)    
+
 class snp:
     def __init__(self, rname, pos, ref, seq, base_call_q = -1):
         self.rname = rname
