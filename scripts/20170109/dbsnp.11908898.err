@@ -1,0 +1,51 @@
+#!/bin/bash
+#SBATCH --job-name=dbsnp
+#SBATCH   --output=dbsnp.%j.out
+#SBATCH    --error=dbsnp.%j.err
+#SBATCH --time=1:00:00
+#SBATCH --qos=normal
+#SBATCH -p dev
+#SBATCH --nodes=1
+#SBATCH --mem=4000
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=ytanigaw@stanford.edu
+#################
+
+cat $0 1>&2
+
+ml load anaconda
+source activate pgenlib
+
+data_loc="${HOME}/data/nanopore-wgs-consortium"
+name="nanopore-wgs.25000.sorted.10k.mapq50.ext.sorted"
+BAMFILE="${data_loc}/${name}.bam"
+
+DBSNP="/share/PI/mrivas/data/dbsnp/dbsnp_all_20151104.vcf.gz"
+ref="${PI_HOME}/data/hg19/hg19.fa"
+Q_CUTOFF=14
+
+OUTFILE="${data_loc}/${name}.q${Q_CUTOFF}.snps"
+
+python2 ../../src/dump_snps.py $ref \
+	--showname \
+	-q ${Q_CUTOFF} \
+	-i <(samtools view ${BAMFILE} | head -n 10) \
+	-s ${DBSNP} > ${OUTFILE}
+
+####################################################################
+Traceback (most recent call last):
+  File "../../src/dump_snps.py", line 47, in <module>
+    main()
+  File "../../src/dump_snps.py", line 44, in main
+    vcf_f = args.s)
+  File "/home/ytanigaw/projects/nanopore/src/utils.py", line 374, in main_dump_snps
+    snpstr = str(data.format_snps(vcf_f))
+  File "/home/ytanigaw/projects/nanopore/src/utils.py", line 253, in format_snps
+    self.dbsnp_lookup(vcf_f)
+  File "/home/ytanigaw/projects/nanopore/src/utils.py", line 232, in dbsnp_lookup
+    s.dbsnp_lookup(vcf_f)
+  File "/home/ytanigaw/projects/nanopore/src/utils.py", line 172, in dbsnp_lookup
+    dbsnp_match = self.dbsnp.get_exact_match(self)
+  File "/home/ytanigaw/projects/nanopore/src/utils.py", line 150, in get_exact_match
+    if(entry[0]         == snp.rname and
+IndexError: list index out of range

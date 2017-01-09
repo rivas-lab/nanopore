@@ -125,6 +125,41 @@ def process_entry(e, reference, gap_char = '_', qval_thr = 20):
                      counts_high_q, counts_low_q, qval_thr, 
                      aln_seq, aln_ref, aln_chr, aln_qual, snps, e))
 
+class tabix_lookup:
+    def __init__(self, vcf_f, rname, pos1, pos2):    
+        '''
+        look up vcf file with tabix and store the results
+        '''
+        try:
+            query_str = '{rname}:{pos1}-{pos2}'.format(rname = rname,
+                                                       pos1  = pos1, 
+                                                       pos2  = pos2)
+            tabix_res = subprocess.check_output(["tabix", vcf_f, query_str]).split('\n')
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+            raise
+        else:            
+            if(len(tabix_res) > 0):
+                # store the results table as a nested list                
+                self.data = [x.split() for x in tabix_res if len(x) > 0]
+            else:
+                self.data = []
+    def has_hit(self):
+        return(len(self.data) > 0)
+    def get_exact_match(self, snp):
+        if(len(self.data) > 0):
+            entry = self.data[0]
+            if(len(entry) > 0 and 
+               entry[0]         == snp.rname and
+               int(entry[1])    == snp.pos and
+               entry[3].upper() == snp.ref.upper() and
+               entry[4].upper() == snp.seq.upper()):
+                return(entry)
+            else:
+                return(None)
+        else:
+            return(None)
+
 class snp:
     def __init__(self, rname, pos, ref, seq, base_call_q = -1):
         self.rname = rname
@@ -135,37 +170,30 @@ class snp:
         self.var = None
         self.dbsnp = None
         
-    def dbsnp_lookup(self, vcf_f):
-        dbsnp = subprocess.check_output(["tabix", vcf_f, 
-                                         '{rname}:{pos1}-{pos2}'.format(rname = self.rname,
-                                                                        pos1 = self.pos, 
-                                                                        pos2 = self.pos)]).split()
-        if(len(dbsnp) > 0):
-            self.dbsnp = dbsnp
-            if(dbsnp[0] == self.rname and 
-               int(dbsnp[1]) == self.pos and
-               dbsnp[3].upper() == self.ref.upper() and
-               dbsnp[4].upper() == self.seq.upper()):
-                self.var = dbsnp[2]      
+    def dbsnp_lookup(self, dbsnp_f, vcf = None):
+        self.dbsnp = tabix_lookup(dbsnp_f, self.rname, self.pos, self.pos)
+        if(self.dbsnp.has_hit()):
+            dbsnp_match = self.dbsnp.get_exact_match(self)
+            if(dbsnp_match is not None):
+                self.var = dbsnp_match[2]
             else:
                 self.var = '!'
         
     def has_hit_on_dbsnp(self):
-        return(self.var != None)
+        return(self.dbsnp.has_hit())
     def has_var_id(self):
         return(self.var != None and len(self.var) > 1)
     
     def __str__(self, full = False):
-        if(self.dbsnp is None):            
-            return(','.join([str(x) for x in 
-                              [self.rname, self.pos, 
-                               self.ref, self.seq, '*']]))
-        else:
+        if(self.dbsnp.has_hit()):            
             return(','.join([str(x) for x in 
                               [self.rname, self.pos, 
                                self.ref, self.seq, self.var]]))
-            
-         
+        else:
+            return(','.join([str(x) for x in 
+                              [self.rname, self.pos, 
+                               self.ref, self.seq, '*']]))
+                                 
 class sam_entry:
     def __init__(self, qname, rname, aln_start, aln_end, seq_len,
                  counts_high_q, counts_low_q, qscore_t,
