@@ -147,19 +147,18 @@ class tabix_lookup:
     def has_hit(self):
         return(len(self.data) > 0)
     def get_exact_match(self, snp):
+        exact_match = None
         if(len(self.data) > 0):
-            entry = self.data[0]
-            if(len(entry) > 0 and 
-               entry[0]         == snp.rname and
-               int(entry[1])    == snp.pos and
-               entry[3].upper() == snp.ref.upper() and
-               entry[4].upper() == snp.seq.upper()):
-                return(entry)
-            else:
-                return(None)
-        else:
-            return(None)
-
+            for entry in self.data:
+                if(len(entry) > 0 and 
+                   entry[0]         == snp.rname and
+                   int(entry[1])    == snp.pos and
+                   entry[3].upper() == snp.ref.upper() and
+                   entry[4].upper() == snp.seq.upper()):
+                    exact_match = entry
+                    break
+        return(exact_match)
+        
 class snp:
     def __init__(self, rname, pos, ref, seq, base_call_q = -1):
         self.rname = rname
