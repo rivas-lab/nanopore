@@ -2,7 +2,7 @@
 #SBATCH --job-name=dbsnp
 #SBATCH   --output=dbsnp.%j.out
 #SBATCH    --error=dbsnp.%j.err
-#SBATCH --time=1:00:00
+#SBATCH --time=2:00:00
 #SBATCH --qos=normal
 #SBATCH -p dev
 #SBATCH --nodes=1
@@ -10,7 +10,6 @@
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=ytanigaw@stanford.edu
 #################
-
 cat $0 1>&2
 
 ml load anaconda
@@ -29,7 +28,7 @@ OUTFILE="${data_loc}/${name}.q${Q_CUTOFF}.snps"
 python2 ../../src/dump_snps.py $ref \
 	--showname \
 	-q ${Q_CUTOFF} \
-	-i <(samtools view ${BAMFILE} | head -n 10) \
+	-i <(samtools view ${BAMFILE}) \
 	-s ${DBSNP} > ${OUTFILE}
 
 ####################################################################
