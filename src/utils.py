@@ -66,7 +66,8 @@ def retrieve_alignment(seq, ref, qual, cigar_list,
                         counts_low_q['X'] = counts_low_q['X'] + 1                
                     else:
                         counts_high_q['X'] = counts_high_q['X'] + 1
-                        snps.append((ptr_ref, ref[ptr_ref], seq[ptr_seq]))
+                        snps.append([ptr_ref, ref[ptr_ref], seq[ptr_seq], 
+                                     ord(qual[ptr_seq]) - 33])
                 ptr_seq = ptr_seq + 1
                 ptr_ref = ptr_ref + 1
         elif(cigar_list[i][1] == 'I'):
@@ -205,11 +206,11 @@ class snp:
         if(self.dbsnp.has_hit()):            
             return(','.join([str(x) for x in 
                               ['{rname}:{pos}'.format(rname = self.rname, pos = self.pos), 
-                               self.ref, self.seq, self.var, self.is_valid]]))
+                               self.ref, self.seq, self.var, self.is_valid, self.base_call_q]]))
         else:
             return(','.join([str(x) for x in 
                               ['{rname}:{pos}'.format(rname = self.rname, pos = self.pos), 
-                               self.ref, self.seq, '*', self.is_valid]]))
+                               self.ref, self.seq, '*', self.is_valid, self.base_call_q]]))
                                  
 class sam_entry:
     def __init__(self, qname, rname, aln_start, aln_end, seq_len,
@@ -227,7 +228,7 @@ class sam_entry:
         self.aln_ref = aln_ref
         self.aln_chr = aln_chr
         self.aln_qual = aln_qual
-        self.snps = [snp(rname, s[0] + aln_start, s[1], s[2]) for s in snps]
+        self.snps = [snp(rname, s[0] + aln_start, s[1], s[2], s[3]) for s in snps]
         self.raw = raw
     def dbsnp_lookup(self, vcf_f, validation_f):
         for s in self.snps:
@@ -353,7 +354,7 @@ def main_extract(in_f, out, err, ref,
 def main_dump_snps(in_f, out, err, ref, 
                    gap_char = '_', qval_thr = -1, showname = False, 
                    vcf_f = None, validation_f = None):     
-    snpstr_head = 'snps([<pos>,<ref>,<seq>,<varid>,<validated>;]+)'
+    snpstr_head = 'snps([<pos>,<ref>,<seq>,<varid>,<validated>,<baseCallQ>;]+)'
     if(showname):
         out.write('\t'.join(['name', '#SNPs', '#SNPs_with_hits_to_dbSNP', '#SNPs_with_var_id', '#SNPs_with_var_id(validated)', snpstr_head]) + '\n')
     else:
