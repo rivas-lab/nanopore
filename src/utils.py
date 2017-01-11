@@ -356,9 +356,14 @@ def main_dump_snps(in_f, out, err, ref,
                    vcf_f = None, validation_f = None):     
     snpstr_head = 'snps([<pos>,<ref>,<seq>,<varid>,<validated>,<baseCallQ>;]+)'
     if(showname):
-        out.write('\t'.join(['name', '#SNPs', '#SNPs_with_hits_to_dbSNP', '#SNPs_with_var_id', '#SNPs_with_var_id(validated)', snpstr_head]) + '\n')
+        out.write('\t'.join(['name', 
+                             '#mismatches', '#mismatches_with_hits_to_dbSNP', 
+                             '#SNPs_with_var_id', '#SNPs_with_var_id(validated)', 
+                             'length', snpstr_head]) + '\n')
     else:
-        out.write('\t'.join(['#SNPs', '#SNPs_with_hits_to_dbSNP', '#SNPs_with_var_id', '#SNPs_with_var_id(validated)', snpstr_head]) + '\n')
+        out.write('\t'.join(['#mismatches', '#mismatches_with_hits_to_dbSNP', 
+                             '#SNPs_with_var_id', '#SNPs_with_var_id(validated)', 
+                             'length', snpstr_head]) + '\n')
     for line in in_f:
         entry = line.strip().split()
         if(((int(entry[1]) >> 11) % 2) == 0):
@@ -381,6 +386,6 @@ def main_dump_snps(in_f, out, err, ref,
                 snpstr = str(data.format_snps(vcf_f, validation_f))
                 snp_nums = data.snp_nums(vcf_f, validation_f)                  
                 if(showname):
-                    out.write('\t'.join([data.qname] + [str(x) for x in snp_nums] + [snpstr]) + '\n')
+                    out.write('\t'.join([data.qname] + [str(x) for x in snp_nums] + [str(data.seq_len), snpstr]) + '\n')
                 else:
-                    out.write('\t'.join([str(x) for x in snp_nums] + [snpstr]) + '\n')
+                    out.write('\t'.join([str(x) for x in snp_nums] + [str(data.seq_len), snpstr]) + '\n')
