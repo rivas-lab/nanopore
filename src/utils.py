@@ -153,15 +153,11 @@ class tabix_lookup:
                 if(len(entry) > 0 and 
                    entry[0]         == snp.rname and
                    int(entry[1])    == snp.pos and
-                   entry[3].upper() == snp.ref.upper()):
-                    # position (and the reference letter of course) has a match
-                    alts = [alt.upper() for alt in entry[4].split(',')]                    
-                    if(snp.seq.upper() in alts):
-                        # if the letter in the read matches 
-                        # one of the alternative alles in the vcf file
-                        exact_match = entry
-                        break
-        return(exact_match)    
+                   entry[3].upper() == snp.ref.upper() and
+                   snp.seq.upper() in [alt.upper() for alt in entry[4].split(',')]):
+                    exact_match = entry
+                    break
+        return(exact_match)
 
 class snp:
     def __init__(self, rname, pos, ref, seq, base_call_q = -1):
@@ -172,30 +168,48 @@ class snp:
         self.base_call_q = base_call_q
         self.var = None
         self.dbsnp = None
+        self.dbsnp_tried = False
+        self.validation = None
+        self.is_valid = None
         
-    def dbsnp_lookup(self, dbsnp_f, vcf = None):
+    def dbsnp_lookup(self, dbsnp_f, validation_f = None):
         self.dbsnp = tabix_lookup(dbsnp_f, self.rname, self.pos, self.pos)
         if(self.dbsnp.has_hit()):
             dbsnp_match = self.dbsnp.get_exact_match(self)
             if(dbsnp_match is not None):
                 self.var = dbsnp_match[2]
+                if(validation_f is not None):
+                    self.validation = tabix_lookup(validation_f, self.rname, self.pos, self.pos)
+                    validation_match = self.validation.get_exact_match(self)
+                    if(validation_match is not None and 
+                       self.seq in [alt.upper() for alt in validation_match[4].split(',')]):
+                        self.is_valid = True
+                    else:
+                        self.is_valid = False
             else:
                 self.var = '!'
-        
-    def has_hit_on_dbsnp(self):
+        self.dbsnp_tried = True        
+    def has_hit_on_dbsnp(self, dbsnp_f, vcf = None):
+        if(not self.dbsnp_tried):
+            self.dbsnp_lookup(dbsnp_f, vcf)        
         return(self.dbsnp.has_hit())
-    def has_var_id(self):
+    def has_var_id(self, dbsnp_f, vcf = None):
+        if(not self.dbsnp_tried):
+            self.dbsnp_lookup(dbsnp_f, vcf)
         return(self.var != None and len(self.var) > 1)
-    
+    def is_validated(self, dbsnp_f, vcf = None):
+        if(not self.dbsnp_tried):
+            self.dbsnp_lookup(dbsnp_f, vcf)
+        return(self.is_valid)        
     def __str__(self, full = False):
         if(self.dbsnp.has_hit()):            
             return(','.join([str(x) for x in 
-                              [self.rname, self.pos, 
-                               self.ref, self.seq, self.var]]))
+                              ['{rname}:{pos}'.format(rname = self.rname, pos = self.pos), 
+                               self.ref, self.seq, self.var, self.is_valid]]))
         else:
             return(','.join([str(x) for x in 
-                              [self.rname, self.pos, 
-                               self.ref, self.seq, '*']]))
+                              ['{rname}:{pos}'.format(rname = self.rname, pos = self.pos), 
+                               self.ref, self.seq, '*', self.is_valid]]))
                                  
 class sam_entry:
     def __init__(self, qname, rname, aln_start, aln_end, seq_len,
@@ -215,14 +229,18 @@ class sam_entry:
         self.aln_qual = aln_qual
         self.snps = [snp(rname, s[0] + aln_start, s[1], s[2]) for s in snps]
         self.raw = raw
-    def dbsnp_lookup(self, vcf_f):
+    def dbsnp_lookup(self, vcf_f, validation_f):
         for s in self.snps:
-            s.dbsnp_lookup(vcf_f)
-    def snp_nums(self):
+            s.dbsnp_lookup(vcf_f, validation_f)
+    def snp_nums(self, vcf_f, validation_f = None):
         total_num = len(self.snps)
-        has_hit_on_dbsnp = sum([int(s.has_hit_on_dbsnp()) for s in self.snps])
-        has_var_id       = sum([int(s.has_var_id()) for s in self.snps])
-        return([total_num, has_hit_on_dbsnp, has_var_id])
+        has_hit_on_dbsnp = sum([int(s.has_hit_on_dbsnp(vcf_f, validation_f)) 
+                                for s in self.snps])
+        has_var_id       = sum([int(s.has_var_id(vcf_f, validation_f)) 
+                                for s in self.snps])
+        has_validated    = sum([int(s.is_validated(vcf_f, validation_f) == True) 
+                                for s in self.snps])
+        return([total_num, has_hit_on_dbsnp, has_var_id, has_validated])
     def format_aln(self, width = None, qual = False):
         strs = []
         if(width == None):
@@ -235,10 +253,10 @@ class sam_entry:
                 strs.append(self.aln_qual[batch * width : (batch + 1) * width])            
             strs.append('')
         return('\n'.join(strs))
-    def format_snps(self, vcf_f = None):
+    def format_snps(self, vcf_f = None, validation_f = None):
         strs = []
         if(vcf_f is not None):
-            self.dbsnp_lookup(vcf_f)
+            self.dbsnp_lookup(vcf_f, validation_f)
         strs.append(';'.join([str(s) for s in self.snps]))
         return('\n'.join(strs))
     
@@ -334,12 +352,12 @@ def main_extract(in_f, out, err, ref,
 
 def main_dump_snps(in_f, out, err, ref, 
                    gap_char = '_', qval_thr = -1, showname = False, 
-                   vcf_f = None): 
-    snpstr_head = 'snps([<pos>,<ref>,<seq>,<varid>;]+)'
+                   vcf_f = None, validation_f = None):     
+    snpstr_head = 'snps([<pos>,<ref>,<seq>,<varid>,<validated>;]+)'
     if(showname):
-        out.write('\t'.join(['name', '#SNPs', '#SNPs_with_hits_to_dbSNP', '#SNPs_with_var_id', snpstr_head]) + '\n')
+        out.write('\t'.join(['name', '#SNPs', '#SNPs_with_hits_to_dbSNP', '#SNPs_with_var_id', '#SNPs_with_var_id(validated)', snpstr_head]) + '\n')
     else:
-        out.write('\t'.join(['#SNPs', '#SNPs_with_hits_to_dbSNP', '#SNPs_with_var_id', snpstr_head]) + '\n')
+        out.write('\t'.join(['#SNPs', '#SNPs_with_hits_to_dbSNP', '#SNPs_with_var_id', '#SNPs_with_var_id(validated)', snpstr_head]) + '\n')
     for line in in_f:
         entry = line.strip().split()
         if(((int(entry[1]) >> 11) % 2) == 0):
@@ -359,8 +377,8 @@ def main_dump_snps(in_f, out, err, ref,
                 #print "Unexpected error:", sys.exc_info()[0]
                 #raise
             else:
-                snpstr = str(data.format_snps(vcf_f))
-                snp_nums = data.snp_nums()                  
+                snpstr = str(data.format_snps(vcf_f, validation_f))
+                snp_nums = data.snp_nums(vcf_f, validation_f)                  
                 if(showname):
                     out.write('\t'.join([data.qname] + [str(x) for x in snp_nums] + [snpstr]) + '\n')
                 else:

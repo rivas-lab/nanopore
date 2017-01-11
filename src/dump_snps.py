@@ -24,6 +24,9 @@ def main():
     parser.add_argument('-s', metavar='s',
                         default = None,
                         help='vcf file (dbSNP)')    
+    parser.add_argument('--validation', metavar='V',
+                        default = None,
+                        help='vcf file (for validation)')        
     parser.add_argument('-q', metavar='q', type=int, default = -1,
                         help='Base call Q-score threshold')
     parser.add_argument('-g', metavar='g',
@@ -41,7 +44,8 @@ def main():
                    gap_char = args.g,
                    qval_thr = args.q,                     
                    showname = args.showname, 
-                   vcf_f = args.s)
+                   vcf_f = args.s,
+                   validation_f = args.validation)
 
 if __name__ == "__main__":
     main()
