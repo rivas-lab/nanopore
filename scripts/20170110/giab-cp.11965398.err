@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH --job-name=giab-cp
+#SBATCH   --output=giab-cp.%j.out
+#SBATCH    --error=giab-cp.%j.err
+#SBATCH --time=0-2:00:00
+#SBATCH --qos=normal
+#SBATCH -p dev
+#SBATCH --nodes=1
+#SBATCH --mem=4000
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=ytanigaw@stanford.edu
+#################
+cat $0 1>&2
+SCRATCH_TODAY=$SCRATCH/$(date +%Y%m%d)
+if [ ! -e $SCRATCH_TODAY ]; then mkdir -p $SCRATCH_TODAY; fi
+#################
+
+cp -r /share/PI/mrivas/data/giab $PI_SCRATCH
+#################
+slurmstepd: error: Exceeded step memory limit at some point.
