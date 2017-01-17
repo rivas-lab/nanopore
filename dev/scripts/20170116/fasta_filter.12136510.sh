@@ -10,7 +10,7 @@
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=ytanigaw@stanford.edu
 #################
-cat $0 > fastq_filter.$SLURM_JOBID.sh
+cat $0 > fasta_filter.$SLURM_JOBID.sh
 ml load anaconda
 source activate pgenlib
 if [ ! -d ${LOCAL_SCRATCH} ]; then mkdir -p ${LOCAL_SCRATCH}; fi

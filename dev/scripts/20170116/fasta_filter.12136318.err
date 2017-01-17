@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=fastq_filter
-#SBATCH   --output=fastq_filter.%j.out
-#SBATCH    --error=fastq_filter.%j.err
+#SBATCH --job-name=fasta_filter
+#SBATCH   --output=fasta_filter.%j.out
+#SBATCH    --error=fasta_filter.%j.err
 #SBATCH --time=1:00:00
 #SBATCH --qos=normal
 #SBATCH -p dev
@@ -10,7 +10,7 @@
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=ytanigaw@stanford.edu
 #################
-cat $0 > fastq_filter.$SLURM_JOBID.sh
+cat $0 1>&2
 ml load anaconda
 source activate pgenlib
 if [ ! -d ${LOCAL_SCRATCH} ]; then mkdir -p ${LOCAL_SCRATCH}; fi
@@ -20,6 +20,8 @@ if [ ! -e ${SCRATCH_TODAY} ]; then mkdir -p ${SCRATCH_TODAY}; fi
 
 cutoff=25
 
+#fastqs=$SCRATCH_TODAY/test.fq.gz
+#fastq_filtered=$SCRATCH_TODAY/test.${cutoff}.fq.gz
 fastqs=$PI_HOME/data/nanopore-wgs-consortium/*.fq.gz
 fastq_filtered=$PI_SCRATCH/projects/nanopore/ont.${cutoff}k.fq.gz
 project_root=$HOME/projects/nanopore

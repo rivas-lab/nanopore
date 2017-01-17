@@ -1,0 +1,8 @@
+/share/PI/mrivas/data/nanopore-wgs-consortium/*.fq.gz --> /scratch/PI/mrivas/projects/nanopore/ont.30k.fq.gz
+/scratch/PI/mrivas/projects/nanopore/ont.30k.fq.gz --> /scratch/PI/mrivas/projects/nanopore/ont.30k.unsorted.unfiltered.bam
+[M::bwa_idx_load_from_disk] read 0 ALT contigs
+[M::process] read 10 sequences (511780 bp)...
+[M::mem_process_seqs] Processed 10 reads in 58.659 CPU sec, 20.171 real sec
+[main] Version: 0.7.15-r1140
+[main] CMD: bwa mem -x ont2d -t 12 /share/PI/mrivas/data/hg19/hg19.fa -
+[main] Real time: 23.488 sec; CPU: 61.926 sec
