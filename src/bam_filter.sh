@@ -71,4 +71,4 @@ if [ -p /dev/stdin ]; then
     cat -
 else
     zcat $@
-fi | awk -v cutoff=$cutoff_val 'BEGIN{OFS="\t"} {if (length($10) > cutoff) {print $0}}'
+fi | awk -v cutoff=$cutoff_val 'BEGIN{OFS="\t"} {if ((length($10) > cutoff) && (($2 / 2048) < 1)) {print $0}}'
