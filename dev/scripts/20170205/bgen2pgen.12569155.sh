@@ -21,14 +21,10 @@ if [ ! -e ${SCRATCH_TODAY} ]; then mkdir -p ${SCRATCH_TODAY}; fi
 DATA_DIR=$PI_HOME/ukbb/download
 TEMP_DIR=$SCRATCH_TODAY
 
-MEMORY=16000
-THREADS=8
-CHR=11
-
-BGEN=$DATA_DIR/chr${CHR}impv1.bgen
-PGEN=$DATA_DIR/chr${CHR}impv1-pgen
+BGEN=$DATA_DIR/chr20impv1.bgen
+PGEN=$DATA_DIR/chr20impv1-pgen
 SAMPLE=$DATA_DIR/impv1.sample
-TEMP=$TEMP_DIR/chr${CHR}impv1-temp
+TEMP=$TEMP_DIR/chr20impv1-temp
 
 echo $BGEN >&2
 echo $SAMPLE >&2
@@ -38,8 +34,7 @@ echo $PGEN >&2
 ${PI_HOME}/bin/plink --version >&2
 
 ${PI_HOME}/bin/plink \
-    --memory ${MEMORY} \
-    --threads ${THREADS} \
+    --memory 16000 \
     --bgen ${BGEN} \
     --sample ${SAMPLE} \
     --out ${TEMP}
@@ -47,8 +42,7 @@ ${PI_HOME}/bin/plink \
 ${PI_HOME}/bin/plink2 --version >&2
 
 ${PI_HOME}/bin/plink2 \
-    --memory ${MEMORY} \
-    --threads ${THREADS} \
+    --memory 16000 \
     --bfile ${TEMP} \
     --make-bpgen \
     --out ${PGEN}

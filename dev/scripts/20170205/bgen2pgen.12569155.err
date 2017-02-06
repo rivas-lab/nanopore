@@ -1,0 +1,9 @@
+/share/PI/mrivas/ukbb/download/chr20impv1.bgen
+/share/PI/mrivas/ukbb/download/impv1.sample
+/scratch/users/ytanigaw/20170206/chr20impv1-temp
+/share/PI/mrivas/ukbb/download/chr20impv1-pgen
+PLINK v1.90b3.45 64-bit (13 Jan 2017)
+Error: File read failure.
+PLINK v2.00a 64-bit (11 Jan 2017)
+Error: Unexpected PLINK 1 .bed file size (expected 27543795134 bytes).
+slurmstepd: error: Exceeded step memory limit at some point.
