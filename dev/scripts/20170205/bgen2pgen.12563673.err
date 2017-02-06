@@ -3,3 +3,5 @@
 /scratch/users/ytanigaw/20170205/chr11impv1-temp
 /share/PI/mrivas/ukbb/download/chr11impv1-pgen
 PLINK v1.90b3.45 64-bit (13 Jan 2017)
+slurmstepd: error: *** JOB 12563673 ON sh-5-36 CANCELLED AT 2017-02-06T00:20:36 DUE TO TIME LIMIT ***
+slurmstepd: error: Exceeded step memory limit at some point.

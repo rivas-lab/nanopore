@@ -2,11 +2,11 @@
 #SBATCH --job-name=bgen2pgen
 #SBATCH   --output=bgen2pgen.%j.out
 #SBATCH    --error=bgen2pgen.%j.err
-#SBATCH --time=12:00:00
+#SBATCH --time=1:00:00
 #SBATCH --qos=normal
-#SBATCH -p normal
+#SBATCH -p dev
 #SBATCH --nodes=1
-#SBATCH --mem=16000
+#SBATCH --mem=8000
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=ytanigaw@stanford.edu
 #################
@@ -34,7 +34,7 @@ echo $PGEN >&2
 ${PI_HOME}/bin/plink --version >&2
 
 ${PI_HOME}/bin/plink \
-    --memory 16000 \
+    --memory 8000 \
     --bgen ${BGEN} \
     --sample ${SAMPLE} \
     --out ${TEMP}
@@ -42,7 +42,7 @@ ${PI_HOME}/bin/plink \
 ${PI_HOME}/bin/plink2 --version >&2
 
 ${PI_HOME}/bin/plink2 \
-    --memory 16000 \
+    --memory 8000 \
     --bfile ${TEMP} \
     --make-bpgen \
     --out ${PGEN}
