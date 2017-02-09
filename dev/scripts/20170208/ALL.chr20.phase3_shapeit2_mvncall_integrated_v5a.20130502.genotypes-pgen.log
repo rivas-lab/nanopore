@@ -1,0 +1,30 @@
+PLINK v2.00a 64-bit (11 Jan 2017)
+Options in effect:
+  --make-pgen
+  --memory 16000
+  --out /share/PI/mrivas/data/1000genomes/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes-pgen
+  --threads 8
+  --vcf /share/PI/mrivas/data/1000genomes/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz
+
+Hostname: sh-5-32.local
+Working directory: /home/ytanigaw/projects/nanopore/dev/scripts/20170208
+Start time: Wed Feb  8 22:04:49 2017
+
+Random number seed: 1486620289
+64380 MB RAM detected; reserving 16000 MB for main workspace.
+--vcf: 1803869 variants scanned.
+8972 multiallelic variants skipped (not yet supported).
+--vcf:
+/share/PI/mrivas/data/1000genomes/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes-pgen-temporary.pgen
++
+/share/PI/mrivas/data/1000genomes/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes-pgen-temporary.pvar
++
+/share/PI/mrivas/data/1000genomes/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes-pgen-temporary.psam
+written.
+Using up to 8 threads (change this with --threads).
+2504 samples (0 females, 0 males, 2504 ambiguous; 2504 founders) loaded from
+/share/PI/mrivas/data/1000genomes/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes-pgen-temporary.psam.
+Error: Invalid QUAL value on line 268 of
+/share/PI/mrivas/data/1000genomes/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes-pgen-temporary.pvar.
+
+End time: Wed Feb  8 22:07:05 2017
