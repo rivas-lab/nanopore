@@ -1,0 +1,31 @@
+Fetching package metadata .......
+Solving package specifications: ..........
+
+Package plan for installation in environment /home/ytanigaw/.conda/envs/debug-scipy_stats-12781890:
+
+The following NEW packages will be INSTALLED:
+
+    libgfortran: 3.0.0-1            (soft-link)
+    mkl:         2017.0.1-0        
+    numpy:       1.12.0-py27_0     
+    openssl:     1.0.2k-0          
+    pip:         9.0.1-py27_1      
+    python:      2.7.13-0          
+    readline:    6.2-2              (soft-link)
+    scipy:       0.18.1-np112py27_1
+    setuptools:  27.2.0-py27_0     
+    sqlite:      3.13.0-0           (soft-link)
+    tk:          8.5.18-0           (soft-link)
+    wheel:       0.29.0-py27_0     
+    zlib:        1.2.8-3            (soft-link)
+
+Linking packages ...
+[                    ]|                                                  |   0%[libgfortran         ]|                                                  |   0%[mkl                 ]|###                                               |   7%[openssl             ]|#######                                           |  15%[readline            ]|###########                                       |  23%[sqlite              ]|###############                                   |  30%[tk                  ]|###################                               |  38%[zlib                ]|#######################                           |  46%[python              ]|##########################                        |  53%[numpy               ]|##############################                    |  61%[setuptools          ]|##################################                |  69%[wheel               ]|######################################            |  76%[pip                 ]|##########################################        |  84%[scipy               ]|##############################################    |  92%[      COMPLETE      ]|##################################################| 100%
+#
+# To activate this environment, use:
+# > source activate debug-scipy_stats-12781890
+#
+# To deactivate this environment, use:
+# > source deactivate debug-scipy_stats-12781890
+#
+

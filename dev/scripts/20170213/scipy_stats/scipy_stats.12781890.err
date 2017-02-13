@@ -1,0 +1,10 @@
+WARNING conda.lock:touch(53): Failed to create lock, do not run conda in parallel processes [errno 13]
+WARNING conda.lock:touch(53): Failed to create lock, do not run conda in parallel processes [errno 13]
+WARNING conda.lock:touch(53): Failed to create lock, do not run conda in parallel processes [errno 13]
+WARNING conda.lock:touch(53): Failed to create lock, do not run conda in parallel processes [errno 13]
+WARNING conda.lock:touch(53): Failed to create lock, do not run conda in parallel processes [errno 13]
+Python 2.7.13 :: Continuum Analytics, Inc.
+/var/spool/slurmd/job12781890/slurm_script: line 27:  2320 Segmentation fault      python  <<EOF
+from scipy import stats
+EOF
+
