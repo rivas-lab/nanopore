@@ -1,0 +1,10 @@
+--2017-02-13 04:11:21--  http://s3.amazonaws.com/nanopore-human-wgs/rel3-fast5-chr20.part02.tar
+Resolving s3.amazonaws.com... 54.231.120.106
+Connecting to s3.amazonaws.com|54.231.120.106|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 307072184320 (286G) [binary/octet-stream]
+Saving to: “/scratch/PI/mrivas/data/NA12878-fast5/rel3-fast5-chr20.part02.tar”
+
+     0K .......... .......... .......... .......... ..........  0%  330K 10d12h
+    50K .......... .......... .......... .......... ..........  0%  327K 10d13h
+   100K .......... .......... .......... .......... ..........  0%  328K 10d13h
