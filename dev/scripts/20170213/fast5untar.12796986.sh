@@ -2,7 +2,7 @@
 #SBATCH --job-name=fast5untar
 #SBATCH   --output=fast5untar.%j.out
 #SBATCH    --error=fast5untar.%j.err
-#SBATCH --time=2-0:00:00
+#SBATCH --time=24:00:00
 #SBATCH --qos=normal
 #SBATCH -p normal
 #SBATCH --nodes=1
@@ -28,5 +28,5 @@ cd $DATA_DIR
 CHR="20"
 
 for PART in "01" "02" "03" "04"; do
-    tar -xf "rel3-fast5-chr${CHR}.part${PART}.tar"
+    tar -xzf "rel3-fast5-chr${CHR}.part${PART}.tar"
 done

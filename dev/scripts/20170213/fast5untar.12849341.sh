@@ -2,9 +2,9 @@
 #SBATCH --job-name=fast5untar
 #SBATCH   --output=fast5untar.%j.out
 #SBATCH    --error=fast5untar.%j.err
-#SBATCH --time=2-0:00:00
+#SBATCH --time=2:00:00
 #SBATCH --qos=normal
-#SBATCH -p normal
+#SBATCH -p dev
 #SBATCH --nodes=1
 #SBATCH --mem=1000
 #SBATCH --mail-type=END,FAIL
