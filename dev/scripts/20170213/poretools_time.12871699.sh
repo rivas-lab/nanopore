@@ -2,7 +2,7 @@
 #SBATCH --job-name=poretools_time
 #SBATCH   --output=poretools_time.%j.out
 #SBATCH    --error=poretools_time.%j.err
-#SBATCH --time=2-0:00:00
+#SBATCH --time=4:00:00
 #SBATCH --qos=normal
 #SBATCH -p normal
 #SBATCH --nodes=1
