@@ -1,0 +1,6 @@
+/var/spool/slurmd/job12899423/slurm_script: line 31: print: command not found
+/var/spool/slurmd/job12899423/slurm_script: line 31: print: command not found
+/var/spool/slurmd/job12899423/slurm_script: line 31: print: command not found
+/var/spool/slurmd/job12899423/slurm_script: line 31: print: command not found
+/var/spool/slurmd/job12899423/slurm_script: line 31: print: command not found
+slurmstepd: error: Exceeded step memory limit at some point.
