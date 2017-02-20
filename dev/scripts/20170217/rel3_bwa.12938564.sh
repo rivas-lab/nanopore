@@ -74,17 +74,14 @@ if [ ! -f ${bam_all} ]; then
 	     -l 9 \
 	     -@ ${threads} \
 	     -m ${memory}M \
-	     -T ${LOCAL_SCRATCH} \
-	     -o ${bam_all} \
-	     ${bam_all_tmp} 
+	     ${bam_all_tmp} \
+	     ${bam_all%.bam}
 
-    if [ ! -f ${bam_all} ]; then
-	if [ "${verbose}" -eq 1 ]; then 
-	    echo "indexing ${bam_all}" >&2
-	fi   
-	/share/PI/mrivas/bin/samtools index ${bam_all} 
+    if [ "${verbose}" -eq 1 ]; then 
+	echo "indexing ${bam_all}" >&2
     fi
 
+    /share/PI/mrivas/bin/samtools index ${bam_all} 
 #    rm ${bam_all_tmp}
 elif [ ${verbose} -eq 1 ]; then
     echo "${bam_all} already exists" >&2

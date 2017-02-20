@@ -2,7 +2,7 @@
 #SBATCH --job-name=rel3_bwa
 #SBATCH   --output=rel3_bwa.%j.out
 #SBATCH    --error=rel3_bwa.%j.err
-#SBATCH --time=12:00:00
+#SBATCH --time=2-0:00:00
 #SBATCH --qos=normal
 #SBATCH -p normal
 #SBATCH --nodes=1
@@ -57,34 +57,29 @@ if [ ! -f ${bam_all} ]; then
 	if [ "${verbose}" -eq 1 ]; then 
 	    echo "indexing ${ref} with bwa index" >&2
 	fi
-	/share/PI/mrivas/bin/bwa index ${ref}
+	bwa index ${ref}
     fi
-
-    if [ ! -f ${bam_all_tmp} ]; then
-	zcat ${fastq} \
-	    | /share/PI/mrivas/bin/bwa mem -x ont2d -t ${threads} $ref - \
-	    | /share/PI/mrivas/bin/samtools view -Sb - > ${bam_all_tmp}
-    fi
+    
+    zcat ${fastq} \
+	| bwa mem -x ont2d -t ${threads} $ref - \
+	| samtools view -Sb - > ${bam_all_tmp}
 
     if [ "${verbose}" -eq 1 ]; then 
 	echo "sorting ${bam_all_tmp}" >&2
     fi
 
-    /share/PI/mrivas/bin/samtools sort \
+    samtools sort \
 	     -l 9 \
 	     -@ ${threads} \
 	     -m ${memory}M \
-	     -T ${LOCAL_SCRATCH} \
-	     -o ${bam_all} \
-	     ${bam_all_tmp} 
+	     ${bam_all_tmp} \
+	     ${bam_all}
 
-    if [ ! -f ${bam_all} ]; then
-	if [ "${verbose}" -eq 1 ]; then 
-	    echo "indexing ${bam_all}" >&2
-	fi   
-	/share/PI/mrivas/bin/samtools index ${bam_all} 
+    if [ "${verbose}" -eq 1 ]; then 
+	echo "indexing ${bam_all}" >&2
     fi
-
+   
+    samtools index ${bam_all}
 #    rm ${bam_all_tmp}
 elif [ ${verbose} -eq 1 ]; then
     echo "${bam_all} already exists" >&2
