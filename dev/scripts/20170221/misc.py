@@ -5,6 +5,9 @@ import sys
 import re
 import collections
 import enum
+import matplotlib
+matplotlib.use('agg')
+from matplotlib import pyplot as plt
 
 @enum.unique
 class Nucleotide(enum.Enum):
@@ -22,6 +25,37 @@ class Nucleotide(enum.Enum):
 #        self.quality   = quality
 Mismatch = collections.namedtuple('Mismatch', 'reference_position reference read quality')   
 
+
+
+def make_hist(x, title = None, xlabel = None, ylabel = None, filename = None):
+    '''This function generates histogram of a vector x and save to file
+    
+    Inputs:
+      x: data vector
+      title:    title of the plot
+      xlabel:   label on x-axis
+      ylabel:   label on y-axis
+      filename: name of the image file (if given, save to file)
+    Returns:
+      matlab plot object
+    Side effect:
+      save an image file if filename is given
+    '''
+    
+    fig = plt.figure(figsize=(8,6))
+    ax = fig.add_subplot(1, 1, 1)
+    ax.hist(x, 20)
+    
+    if(xlabel != None):
+        ax.set_xlabel(xlabel)
+    if(ylabel != None):
+        ax.set_ylabel(ylabel)
+    if(title != None):
+        ax.set_title(title)
+    if(filename != None):
+        fig.savefig(filename)
+        
+        
 
 def get_ref_file_name(filename_template, chromosome, extension):
     '''Convert filename template to actual file name
