@@ -34,14 +34,21 @@ class read:
 
     def get_mismatches(self, quality_threshod = 14):
         return([i for i in self.mismatches 
-                if i.quality >= quality_threshod and
-                   i.reference is not Nucleotide['N']])
+                         if i.quality >= quality_threshod and
+                         i.reference is not Nucleotide['N']])
 
     def get_mismatches_pos(self, quality_threshod = 14):
         '''Get positions of mismatches
         '''
         return(np.array([x.reference_position for x 
                          in self.get_mismatches(quality_threshod)]))    
+    
+    def get_mismatches_polymorphic(self, bim, quality_threshod = 14):
+        '''Get mismatches on polymorphic sites
+        '''
+        return(np.array([x for x in self.get_mismatches() 
+                         if x.reference_position 
+                         in set(self.get_mismatches_and_find_bim_exact(bim))]))
 
     def get_mismatches_and_find_bim_exact(self, bim, quality_threshod = 14):
         '''Get positions of mismatches, query bim file and return 
