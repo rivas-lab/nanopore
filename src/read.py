@@ -43,12 +43,16 @@ class read:
         return(np.array([x.reference_position for x 
                          in self.get_mismatches(quality_threshod)]))    
     
-    def get_mismatches_polymorphic(self, bim, quality_threshod = 14):
+    def get_mismatches_polymorphic(self, bim, quality_threshod = 14, 
+                                   pos_l = -1, pos_r = sys.maxint):
         '''Get mismatches on polymorphic sites
+        We can specify the interval of interest by [pos_l, pos_r) 
         '''
         return(np.array([x for x in self.get_mismatches() 
-                         if x.reference_position 
-                         in set(self.get_mismatches_and_find_bim_exact(bim))]))
+                         if ((pos_l <= x.reference_position) and
+                             (x.reference_position < pos_r) and
+                             (x.reference_position 
+                              in set(self.get_mismatches_and_find_bim_exact(bim))))]))
 
     def get_mismatches_and_find_bim_exact(self, bim, quality_threshod = 14):
         '''Get positions of mismatches, query bim file and return 

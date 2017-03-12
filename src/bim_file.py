@@ -21,7 +21,7 @@ class bim_file():
         self.pri = {}
         self.sec = {}
         
-    def load_raw_table(self, chromosome):
+    def load_raw_table(self, chromosome, index_base = 1):
         self.raw_tables[str(chromosome)] = \
             pd.read_csv(misc.get_bim_file_name(chromosome=chromosome,
                                                param_obj = self.params),
@@ -29,7 +29,8 @@ class bim_file():
                         names = ['chr', 'id', 'morgan', 'bp', 'pri', 'sec'])            
         self.id[    str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 1])            
         self.morgan[str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 2])            
-        self.bp[    str(chromosome)] = np.array([int(x) for x in self.raw_tables[str(chromosome)].ix[:, 3]])
+        self.bp[    str(chromosome)] = np.array([int(x) - index_base for x 
+                                                 in self.raw_tables[str(chromosome)].ix[:, 3]])
         self.pri[   str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 4])
         self.sec[   str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 5])            
         
@@ -90,10 +91,9 @@ class bim_file():
         If there is an exact hit, return the index on bim
         else, return None to indicate it is NOT polymorphic region
         '''
-        return(index 
-               if (self.get_bp(chromosome)[self.find_index(chromosome, 
-                                                           position)] 
-                   == position)
+        index = self.find_index(chromosome, position)
+        return(index
+               if (self.get_bp(chromosome)[index] == position)
                else None)
 
     def find_index_exact_list(self, chromosome, positions):
