@@ -28,12 +28,44 @@ class read:
         self.length          = aligned_segment.reference_length
         self.mapping_quality = aligned_segment.mapping_quality
 
+        # temp: want to map 'chr20' -> 20
+        self.reference_chr   = int(self.reference_name[3:])
+        
 
     def get_mismatches(self, quality_threshod = 14):
         return([i for i in self.mismatches 
                 if i.quality >= quality_threshod and
                    i.reference is not Nucleotide['N']])
 
+    def get_mismatches_pos(self, quality_threshod = 14):
+        '''Get positions of mismatches
+        '''
+        return(np.array([x.reference_position for x 
+                         in self.get_mismatches(quality_threshod)]))    
+
+    def get_mismatches_and_find_bim_exact(self, bim, quality_threshod = 14):
+        '''Get positions of mismatches, query bim file and return 
+        exact index on bim file
+        '''
+        return(bim.find_index_exact_list(self.reference_chr, 
+                                         self.get_mismatches_pos()))
+    
+    def n_polymorphic_sites(self, bim):
+        '''Number of polymorphic sites on this read
+        '''
+        return(bim.find_index(self.reference_chr, self.reference_end) 
+               - bim.find_index(self.reference_chr, self.reference_start))
+    
+    def non_polymorphic_error_rate(self, bim, quality_threshod = 14):
+        '''Estimate read specific error rate
+        
+        # of mismatches on non polymorphic sites / # of non polymorphic sites
+        '''
+        return(1.0 
+               * np.sum([x == None for x 
+                         in self.get_mismatches_and_find_bim_exact(bim, quality_threshod)]) 
+               / (self.length - self.n_polymorphic_sites(bim)))
+    
     def n_mismatch(self, quality_threshod = 14):
         return(len(self.get_mismatches(quality_threshod)))
     

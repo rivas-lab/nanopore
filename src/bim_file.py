@@ -71,6 +71,10 @@ class bim_file():
         return(min(len(bp) - 1,
                    max(0,
                        bisect.bisect_left(bp, position))))
+
+    def find_index_list(self, chromosome, positions):
+        return(np.array([self.find_index(chromosome, position)
+                         for position in positions]))
     
     def find_index_interval(self, chromosome, pos_l, pos_r):
         '''Find semi-open interval of indicies of SNPs that 
@@ -79,3 +83,19 @@ class bim_file():
         index_l = self.find_index(chromosome, pos_l)
         index_r = self.find_index(chromosome, pos_r)
         return((index_l, index_r))
+    
+    def find_index_exact(self, chromosome, position):
+        '''
+        Find index on bim file by chromosom and position
+        If there is an exact hit, return the index on bim
+        else, return None to indicate it is NOT polymorphic region
+        '''
+        return(index 
+               if (self.get_bp(chromosome)[self.find_index(chromosome, 
+                                                           position)] 
+                   == position)
+               else None)
+
+    def find_index_exact_list(self, chromosome, positions):
+        return(np.array([self.find_index_exact(chromosome, position)
+                         for position in positions]))        
