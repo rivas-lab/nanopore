@@ -40,3 +40,11 @@ class population_reference():
         pgen.read_alleles_range(index_l, index_r, alleles_list)
         return([Haplotype(chromosome, index_l, index_r, alleles_list[:, i]) 
                 for i in range(alleles_list.shape[1])])
+
+    def read_alleles(self, chromosome, index_l, index_r):
+        pgen = self.get_pgen(chromosome)
+        sample_ct = pgen.get_raw_sample_ct()
+        alleles_list = np.zeros((index_r - index_l, 2 * sample_ct),
+                                dtype = np.int32)
+        pgen.read_alleles_range(index_l, index_r, alleles_list)
+        return(alleles_list)    

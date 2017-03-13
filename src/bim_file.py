@@ -18,21 +18,21 @@ class bim_file():
         self.id = {}
         self.morgan = {}
         self.bp = {}
-        self.pri = {}
-        self.sec = {}
+        self.allele_1 = {}
+        self.allele_2 = {}
         
     def load_raw_table(self, chromosome, index_base = 1):
         self.raw_tables[str(chromosome)] = \
             pd.read_csv(misc.get_bim_file_name(chromosome=chromosome,
                                                param_obj = self.params),
                         sep = '\t', 
-                        names = ['chr', 'id', 'morgan', 'bp', 'pri', 'sec'])            
-        self.id[    str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 1])            
-        self.morgan[str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 2])            
-        self.bp[    str(chromosome)] = np.array([int(x) - index_base for x 
-                                                 in self.raw_tables[str(chromosome)].ix[:, 3]])
-        self.pri[   str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 4])
-        self.sec[   str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 5])            
+                        names = ['chr', 'id', 'morgan', 'bp', 'allele_1', 'allele_2'])
+        self.id[      str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 1])            
+        self.morgan[  str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 2])            
+        self.bp[      str(chromosome)] = np.array([int(x) - index_base for x 
+                                                   in self.raw_tables[str(chromosome)].ix[:, 3]])
+        self.allele_1[str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 4])
+        self.allele_2[str(chromosome)] = np.array(self.raw_tables[str(chromosome)].ix[:, 5])            
         
     def is_loaded(self, chromosome):
         return(str(chromosome) in self.raw_tables)
@@ -57,15 +57,15 @@ class bim_file():
             self.load_raw_table(chromosome)
         return(self.bp[str(chromosome)])  
 
-    def get_pri(self, chromosome):
+    def get_allele_1(self, chromosome):
         if(not self.is_loaded(chromosome)):
             self.load_raw_table(chromosome)
-        return(self.pri[str(chromosome)])  
+        return(self.allele_1[str(chromosome)])  
 
-    def get_sec(self, chromosome):
+    def get_allele_2(self, chromosome):
         if(not self.is_loaded(chromosome)):
             self.load_raw_table(chromosome)
-        return(self.sec[str(chromosome)])  
+        return(self.allele_2[str(chromosome)])  
     
     def find_index(self, chromosome, position):
         bp = self.get_bp(chromosome)
