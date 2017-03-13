@@ -54,12 +54,29 @@ class read:
                              (x.reference_position 
                               in set(self.get_mismatches_and_find_bim_exact(bim))))]))
 
+    def get_mismatches_polymorphic_pos(self, bim, quality_threshod = 14, 
+                                   pos_l = -1, pos_r = sys.maxint):
+        '''Get positions of mismatches on polymorphic sites
+        '''
+        return(np.array([x.reference_position for x 
+                         in self.get_mismatches_polymorphic(bim, 
+                                                            quality_threshod,
+                                                            pos_l, pos_r)]))    
+
+    
     def get_mismatches_and_find_bim_exact(self, bim, quality_threshod = 14):
         '''Get positions of mismatches, query bim file and return 
         exact index on bim file
         '''
         return(bim.find_index_exact_list(self.reference_chr, 
                                          self.get_mismatches_pos()))
+    
+    def get_bim_interval(self, bim):
+        '''Convert to bim index
+        '''
+        return(bim.find_index_interval(self.reference_chr,
+                                       self.reference_start, 
+                                       self.reference_end))
     
     def n_polymorphic_sites(self, bim):
         '''Number of polymorphic sites on this read
