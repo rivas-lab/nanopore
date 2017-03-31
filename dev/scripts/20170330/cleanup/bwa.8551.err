@@ -1,0 +1,4 @@
+/lscratch/ytanigaw/8551
+/home/groups/mrivas/data/nanopore-helio/20161006_minion_human_cDNA.fq.gz --> /home/groups/mrivas/data/nanopore-helio/20161006_minion_human_cDNA.bam
+sorting /home/groups/mrivas/data/nanopore-helio/20161006_minion_human_cDNA.tmp.bam
+indexing /home/groups/mrivas/data/nanopore-helio/20161006_minion_human_cDNA.bam
