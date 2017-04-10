@@ -17,15 +17,15 @@ while getopts ":c:kv" opt; do
     case $opt in
 	c)
 	    cutoff=$OPTARG
-	    nshift=$(echo "${nshift:-0} + 2" | bc)
+	    nshift=$(echo "${nshift:-0} + 2" | /share/PI/mrivas/bin/bc)
 	    ;;
 	k)
 	    base_letter="k"
-	    nshift=$(echo "${nshift:-0} + 1" | bc)
+	    nshift=$(echo "${nshift:-0} + 1" | /share/PI/mrivas/bin/bc)
 	    ;;
 	v)
 	    verbose=1
-	    nshift=$(echo "${nshift:-0} + 1" | bc)
+	    nshift=$(echo "${nshift:-0} + 1" | /share/PI/mrivas/bin/bc)
 	    ;;
 	\?)
 	    echo "Invalid option: -$OPTARG" >&2
@@ -46,7 +46,7 @@ case $base_letter in
 	;;
 esac
 shift $nshift
-cutoff_val=$(echo "${cutoff} * ${base}" | bc)
+cutoff_val=$(echo "${cutoff} * ${base}" | /share/PI/mrivas/bin/bc)
 suffix="${cutoff}${base_letter}"
 
 

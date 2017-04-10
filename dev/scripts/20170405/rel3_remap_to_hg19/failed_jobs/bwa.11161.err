@@ -1,0 +1,4 @@
+current location (SCRATCH_TODAY) is:
+/scratch/users/ytanigaw/20170405
+/var/spool/slurmd/job11161/slurm_script: line 43: syntax error near unexpected token `X'
+/var/spool/slurmd/job11161/slurm_script: line 43: `for CHR in $(seq 8 22); X Y M do'
