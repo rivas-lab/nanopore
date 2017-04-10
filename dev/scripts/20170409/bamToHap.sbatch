@@ -5,9 +5,9 @@
 #SBATCH --job-name=bamToHap
 #SBATCH   --output=bamToHap.%j.out
 #SBATCH    --error=bamToHap.%j.err
-#SBATCH --time=2:00:00
+#SBATCH --time=6:00:00
 #SBATCH --qos=normal
-#SBATCH -p dev
+#SBATCH -p normal
 #SBATCH --nodes=1
 #SBATCH --cores=1
 #SBATCH --mem=4000
