@@ -23,7 +23,7 @@ source activate pgenlib
 #################
 
 fasta=$PI_HOME/data/hg19/chr
-bim=$PI_HOME/public_data/1000genomes/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.bim
+bim=$PI_HOME/data/1000genomes/ALL.chr20.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes-pgen.bim
 bam=$PI_HOME/data/nanopore-wgs-consortium/rel3/hg19/chr20/rel3.chr20.12500.10k.bam
 
 hap=${bam%.bam}.hap
