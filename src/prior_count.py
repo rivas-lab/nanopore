@@ -3,17 +3,11 @@ from __future__ import print_function
 import sys
 import logging
 from logging.config import dictConfig
-import pickle
 import numpy as np
 import pandas as pd
-#import matplotlib
-#import matplotlib.pyplot as plt
-#import matplotlib.gridspec as gridspec
 import itertools as it
 import collections as cl
 import multiprocessing
-
-#from numba import jit
 
 import pgenlib as pg
 
@@ -77,20 +71,20 @@ def main():
     pgen_log='chr20impv1-keep-maf0005-snv-biallelic-geno01-hwe1e-10-pg.log'
     pgen_f = '{}{}.pgen'.format(data_dir, pgen_log[:-4])
     block_bed_f = '{}{}.bed'.format(data_dir, block_log[:-4])
-    count_f='{}.pkl'.format(block_bed_f[:-4])
     
+    prior_dir='{}prior_count'.format(data_dir)    
     
     block_bed = pd.read_csv(block_bed_f, sep='\t', names=['chrom', 'chromStart', 'chromEnd', 'name'])
     block_bed['bim_interval'] = block_bed.name.map(lambda x: [int(pos) for pos in x.split(':')])
-    
 
-    cnts = [prior_count(pgen_f, block_bed, block_id) 
-            for block_id in range(10)]    
-#    cnts = [prior_count(pgen_f, block_bed, block_id) 
-#            for block_id in range(len(block_bed))]
+    for block_id in range(len(block_bed)):
+        cnt = prior_count(pgen_f, block_bed, block_id)
+        np.savez(
+            '{}/{}.npz'.format(prior_dir, block_id),
+            keys = np.array(cnt.keys(), dtype=np.int8),
+            vals = np.array(cnt.values())
+        )                
     
-    pickle.dump(cnts, open(count_f, 'wb'), protocol=2)
-
 if __name__ == '__main__':
     main()
     
