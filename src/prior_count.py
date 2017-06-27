@@ -53,26 +53,27 @@ def count_alleles_freq(geno):
 
 
 def prior_count(pgen_f, block_df, block_id):
-    logger_cnt = logging.getLogger('prior_count')
-    cnt = count_alleles_freq(
-        filter_missing_alleles(
-            read_alleles_block(pgen_f, block_df, block_id)
+    logger_cnt = logging.getLogger('prior_count')    
+    geno = filter_missing_alleles(
+        read_alleles_block(pgen_f, block_df, block_id)
+    )        
+    cnt = count_alleles_freq(geno)
+    logger_cnt.info(
+        'block {:3d}; {} bytes; {}; {}'.format(
+            block_id, sys.getsizeof(cnt), geno.shape, len(cnt)
         )
     )    
-    logger_cnt.info(
-        'block {:3d} {} bytes'.format(block_id, sys.getsizeof(cnt))
-    )    
-    return cnt
+    return cnt    
 
 def main():
-    data_dir='/oak/stanford/groups/mrivas/users/ytanigaw/nanopore-data/'
+    data_dir='/oak/stanford/groups/mrivas/users/ytanigaw/nanopore-data'
     geno_bed_log='chr20impv1-keep-maf0005-snv-biallelic-geno01-hwe1e-10.log'
     block_log='chr20impv1-keep-maf0005-snv-biallelic-geno01-hwe1e-10-block-stronglow050-stronghigh083-infofrac10.log'
     pgen_log='chr20impv1-keep-maf0005-snv-biallelic-geno01-hwe1e-10-pg.log'
-    pgen_f = '{}{}.pgen'.format(data_dir, pgen_log[:-4])
-    block_bed_f = '{}{}.bed'.format(data_dir, block_log[:-4])
+    pgen_f = '{}/{}.pgen'.format(data_dir, pgen_log[:-4])
+    block_bed_f = '{}/{}.bed'.format(data_dir, block_log[:-4])
     
-    prior_dir='{}prior_count'.format(data_dir)    
+    prior_dir='{}/prior_count'.format(data_dir)    
     
     block_bed = pd.read_csv(block_bed_f, sep='\t', names=['chrom', 'chromStart', 'chromEnd', 'name'])
     block_bed['bim_interval'] = block_bed.name.map(lambda x: [int(pos) for pos in x.split(':')])
