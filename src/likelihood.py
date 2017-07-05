@@ -25,7 +25,7 @@ logging_config = dict(
         },
     root = {
         'handlers': ['h'],
-        'level': logging.DEBUG,
+        'level': logging.INFO,
         },
 )
 dictConfig(logging_config)
@@ -56,27 +56,32 @@ def read_prior_cnts(block_df, prior_count_dir):
 
 @jit
 def find_block_intervals_from_hap(block_df, hapStart, hapEnd):
-    """Align two cordinates (one on read, the other on block_df)"""
+    """Align two cordinates (one on read, the other lon block_df)"""
+    
     hap_len = hapEnd - hapStart
     hap_to_assign_len = hap_len 
     start_block = bisect.bisect_right(block_df.bimStart.as_matrix(), hapStart) - 1
     current_block = start_block
-    
+
     res = dict([])
     
     while(hap_to_assign_len > 0):
+        
         if(start_block == current_block):
             current_block_SNP_start = hapStart - block_df.bimStart[current_block] 
         else:
             current_block_SNP_start = 0
-        if(hap_to_assign_len < block_df.n_SNPs[current_block]):
-            current_block_SNP_end = hap_to_assign_len 
+            
+        if(hap_to_assign_len < block_df.n_SNPs[current_block] - current_block_SNP_start):
+            current_block_SNP_end = hap_to_assign_len + current_block_SNP_start
+            
             res[current_block] = ((hap_len - hap_to_assign_len, 
                                    hap_len - hap_to_assign_len + current_block_SNP_end - current_block_SNP_start),
                                   (current_block_SNP_start, current_block_SNP_end))
             hap_to_assign_len = 0
         else:
             current_block_SNP_end = block_df.n_SNPs[current_block] 
+            
             res[current_block] = ((hap_len - hap_to_assign_len, 
                                    hap_len - hap_to_assign_len + current_block_SNP_end - current_block_SNP_start),
                                   (current_block_SNP_start, current_block_SNP_end))
@@ -142,8 +147,8 @@ def update_ll(hap_f, block_df, prior_cnt_keys, log_likelihood = dict([])):
         for line_num, raw_line in enumerate(f):
             line  = raw_line.rstrip().split('\t')
             
-#            if(line_num % 100 == 0):            
-            if True:
+            if(line_num % 100 == 0):            
+#            if True:
                 logger_ll.info(
                     'processing read {} {}'.format(line_num, line[3])
                 )                                

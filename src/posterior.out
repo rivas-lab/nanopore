@@ -1,0 +1,29 @@
+2017-07-01 11:36:19,909 read_prior_cnts INFO     reading prior counts from /oak/stanford/groups/mrivas/users/ytanigaw/nanopore-data/prior_count
+2017-07-01 11:36:19,909 read_prior_cnts INFO     reading block 0 of 642
+2017-07-01 11:36:20,946 read_prior_cnts INFO     reading block 100 of 642
+2017-07-01 11:36:21,926 read_prior_cnts INFO     reading block 200 of 642
+2017-07-01 11:36:23,114 read_prior_cnts INFO     reading block 300 of 642
+2017-07-01 11:36:24,323 read_prior_cnts INFO     reading block 400 of 642
+2017-07-01 11:36:25,336 read_prior_cnts INFO     reading block 500 of 642
+2017-07-01 11:36:26,120 read_prior_cnts INFO     reading block 600 of 642
+2017-07-01 11:36:26,581 read_prior_cnts INFO     prior counts is loaded on memory
+2017-07-01 11:36:26,582 read_log_likelihood INFO     reading read_log_likelihood from /oak/stanford/groups/mrivas/users/ytanigaw/nanopore-data/log_likelihood/rel3.chr20.12500.10k-chr20impv1-keep-maf0005-snv-biallelic-geno01-hwe1e-10
+2017-07-01 11:36:26,582 read_log_likelihood INFO     reading block 0 of 642
+2017-07-01 11:36:26,685 read_log_likelihood INFO     reading block 100 of 642
+2017-07-01 11:36:26,787 read_log_likelihood INFO     reading block 200 of 642
+2017-07-01 11:36:26,892 read_log_likelihood INFO     reading block 300 of 642
+2017-07-01 11:36:26,995 read_log_likelihood INFO     reading block 400 of 642
+2017-07-01 11:36:27,089 read_log_likelihood INFO     reading block 500 of 642
+2017-07-01 11:36:27,179 read_log_likelihood INFO     reading block 600 of 642
+2017-07-01 11:36:27,217 read_log_likelihood INFO     log likelihood is loaded on memory
+2017-07-01 11:36:27,218 compute_log_posterior INFO     computing log posterior probabilities
+2017-07-01 11:36:27,218 compute_log_posterior INFO     processing block 0
+posterior.py:98: RuntimeWarning: divide by zero encountered in log
+  log_partition = np.log(np.sum(np.exp(log_joint_prob)))
+2017-07-01 11:36:27,262 compute_log_posterior INFO     processing block 100
+2017-07-01 11:36:27,300 compute_log_posterior INFO     processing block 200
+2017-07-01 11:36:27,339 compute_log_posterior INFO     processing block 300
+2017-07-01 11:36:27,377 compute_log_posterior INFO     processing block 400
+2017-07-01 11:36:27,414 compute_log_posterior INFO     processing block 500
+2017-07-01 11:36:27,450 compute_log_posterior INFO     processing block 600
+2017-07-01 11:36:27,464 compute_log_posterior INFO     posterior computation done!
