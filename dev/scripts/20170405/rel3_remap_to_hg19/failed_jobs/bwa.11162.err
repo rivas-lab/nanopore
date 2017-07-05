@@ -1,7 +1,0 @@
-current location (SCRATCH_TODAY) is:
-/scratch/users/ytanigaw/20170405
-/scratch/PI/mrivas/data/nanopore-wgs-consortium-rel3/chr8.sorted.bam --> /scratch/PI/mrivas/data/nanopore-wgs-consortium-rel3-remap/chr8.bam
-[M::bwa_idx_load_from_disk] read 0 ALT contigs
-[M::process] read 22628 sequences (160005096 bp)...
-[M::process] read 23914 sequences (160016968 bp)...
-slurmstepd: error: *** JOB 11162 ON sh-102-07 CANCELLED AT 2017-04-05T21:21:50 ***
