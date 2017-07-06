@@ -8,7 +8,7 @@
 #SBATCH -p owners
 #SBATCH --nodes=1
 #SBATCH --cores=10
-#SBATCH --mem=100g
+#SBATCH --mem=220g
 #SBATCH --mail-type=END,FAIL
 #################
 set -beEu -o pipefail
@@ -17,11 +17,12 @@ cat $0 > phase-prep-exec.${SLURM_JOBID}.sh
 
 input="../../../../private_data/input/population_ref/chr20-geno"
 output="../../../../sandbox/data_prep/population_ref/chr20-geno.bcf"
+keep="../../../../private_data/input/population_ref/samples.phe"
 
-memory=90000
+memory=210000
 threads=10
 
 script=/oak/stanford/groups/mrivas/users/ytanigaw/repos/rivas-lab/nanopore/src/data_prep/population_ref/phase-prep/phase-prep.sh
 
-bash $script $input $output $memory $threads
+bash $script $input $output $keep $memory $threads
 
