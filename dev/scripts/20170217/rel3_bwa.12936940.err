@@ -1,3 +1,0 @@
-/local-scratch/ytanigaw/12936940
-/var/spool/slurmd/job12936940/slurm_script: line 65: syntax error near unexpected token `|'
-/var/spool/slurmd/job12936940/slurm_script: line 65: `	| samtools view -Sb - > ${bam_all_tmp}'

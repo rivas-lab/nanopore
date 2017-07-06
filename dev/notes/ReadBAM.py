@@ -1,1 +1,0 @@
-/home/ytanigaw/projects/nanopore/src/ReadBAM.py

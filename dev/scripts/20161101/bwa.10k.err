@@ -1,8 +1,0 @@
-[M::bwa_idx_load_from_disk] read 0 ALT contigs
-[M::process] read 592 sequences (10017481 bp)...
-[M::process] read 68 sequences (993865 bp)...
-[M::mem_process_seqs] Processed 592 reads in 801.302 CPU sec, 801.145 real sec
-[M::mem_process_seqs] Processed 68 reads in 50.768 CPU sec, 50.711 real sec
-[main] Version: 0.7.15-r1140
-[main] CMD: bwa mem -x ont2d /share/PI/mrivas/data/hg19/hg19.fa /share/PI/mrivas/data/nanopore/20161008_wgs_caucasian_48hr.10k.fq
-[main] Real time: 907.151 sec; CPU: 855.431 sec

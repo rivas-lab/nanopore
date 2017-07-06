@@ -1,3 +1,0 @@
-/var/spool/slurmd/job11069444/slurm_script: line 17: 41254 Broken pipe             cat /home/ytanigaw/data/nanopore/20161008_wgs_caucasian_48hr.10k.bwa.mapq60.20kb.chr11.sam.body
-     41255 Killed                  | python2 ${HOME}/projects/nanopore/src/count.py ~/PI_HOME/data/hg19/hg19.fa
-slurmstepd: error: Exceeded step memory limit at some point.

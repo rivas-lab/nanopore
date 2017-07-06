@@ -1,4 +1,0 @@
-/local-scratch/ytanigaw/12938767
-/scratch/PI/mrivas/data/NA12878-fast5/poretools_fastq.12894489.geq12500.fq.gz --> /scratch/PI/mrivas/data/NA12878-fast5/poretools_fastq.12894489.geq12500.bam
-sorting /scratch/PI/mrivas/data/NA12878-fast5/poretools_fastq.12894489.geq12500.tmp.bam
-slurmstepd: error: Exceeded step memory limit at some point.

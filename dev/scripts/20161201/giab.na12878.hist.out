@@ -1,5 +1,0 @@
-[plot 26f4528] add plot of /share/PI/mrivas/data/giab/NA12878_PacBio_MtSinai/sorted_final_merged.bam.stats
- 1 file changed, 0 insertions(+), 0 deletions(-)
- create mode 100644 scripts/20161201/sorted_final_merged.bam.stats.hist.png
-Your branch is ahead of 'origin/master' by 1 commit.
-  (use "git push" to publish your local commits)

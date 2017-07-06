@@ -1,7 +1,0 @@
-cp: error writing ‘/lscratch/ytanigaw/8558/tmp.h0wSpF2dl2/WTCHG-Gplc-NA12878-minion-R9.4-v0.3.tar’: No space left on device
-cp: failed to extend ‘/lscratch/ytanigaw/8558/tmp.h0wSpF2dl2/WTCHG-Gplc-NA12878-minion-R9.4-v0.3.tar’: No space left on device
-
-gzip: WTCHG-Gplc-NA12878-minion-R9.4-v0.3.tar.gz: No space left on device
-cp: cannot stat ‘/lscratch/ytanigaw/8558/tmp.h0wSpF2dl2/WTCHG-Gplc-NA12878-minion-R9.4-v0.3.tar.gz’: No such file or directory
-slurmstepd: error: Exceeded step memory limit at some point.
-slurmstepd: error: Exceeded job memory limit at some point.

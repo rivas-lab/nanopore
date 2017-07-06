@@ -1,3 +1,0 @@
-/var/spool/slurmd/job10516717/slurm_script: line 24: 43444 Broken pipe             cat ${data_head}.10k.helio.no-split.maf
-     43445 Killed                  | last-split -c0 > ${data_head}.10k.helio.split.maf
-slurmstepd: error: Exceeded step memory limit at some point.

@@ -1,9 +1,0 @@
-[samopen] SAM header is present: 93 sequences.
-[sam_read1] reference 'ID:BLASR.Z	VN:1.3.2	CL:blasr -sam -clipping soft -noSplitSubreads 0a80ceb0_q.fa ucsc.hg19.fasta -sa ucsc.hg19.sa -bestn 10 -nproc 12 -out 0a80ceb0_q.sam 
-
-q;MergeQV=mq;SubstitutionTag=st;DeletionTag=dt;Ipd=ip	SM:NO_CHIP_ID
-2312aa0c5212f156596b7d7a
-
-
-' is recognized as '*'.
-[main_samview] truncated file.

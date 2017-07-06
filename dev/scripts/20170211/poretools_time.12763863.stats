@@ -1,2 +1,0 @@
-channel	filename	read_length	exp_starttime	unix_timestamp	duration	unix_timestamp_end	iso_timestamp	day	hour	minute
-391	./sample_fast5.fast5	4652	1479439380	1479460809	11	1479460820	2016-11-18T01:20:09+0000	18	01	20

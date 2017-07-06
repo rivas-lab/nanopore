@@ -1,2 +1,0 @@
-/var/spool/slurmd/job10307082/slurm_script: line 25: 19006 Killed                  lastdb -uNEAR -R01 ${PI_HOME}/data/hg19/hg19.lastdb ${PI_HOME}/data/hg19/*.fa
-slurmstepd: error: Exceeded step memory limit at some point.

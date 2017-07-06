@@ -1,3 +1,0 @@
-/var/spool/slurmd/job10515493/slurm_script: line 27: 21049 Broken pipe             lastal -Q1 -D100 -s2 -T0 -a1 ${PI_HOME}/data/hg19/hg19.lastdb ${data_head}.10k.fq
-     21050 Killed                  | last-split -c0 > ${data_head}.10k.helio.maf
-slurmstepd: error: Exceeded step memory limit at some point.
