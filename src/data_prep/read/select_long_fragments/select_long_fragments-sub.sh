@@ -20,6 +20,6 @@ samtools view -q $minMapQ -h $bam \
 	| awk -v minLen=$minLen '((substr($0, 1, 1) == "@") || length($10) >= minLen){print $0}' \
 	| samtools view -bS - > $outTmp
 
-echo "[$0] writing to the results file" > &2
+echo "[$0] writing to the results file" >&2
 mv $outTmp $outFile
 
