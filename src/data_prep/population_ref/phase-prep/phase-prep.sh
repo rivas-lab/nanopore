@@ -45,5 +45,9 @@ plink --bfile $input \
 echo "[$0] running bcftools to convert to a bcf file"
 bcftools convert --output-type b --threads $threads --output $tmp_bcf $tmp_vcf
 
+echo "[$0] indexing the bcf file"
+bcftools index $tmp_bcf
+
 mv $tmp_bcf $output
+mv ${tmp_bcf}.csi ${output}.csi
 
