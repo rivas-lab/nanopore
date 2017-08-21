@@ -18,5 +18,9 @@ hapcnt_d="$inference_d/hapcnt/chr20"
 log_likelihood_d="$inference_d/log_likelihood/chr20/chr20.sorted"
 log_posterior_d="$inference_d/log_posterior/chr20/chr20.sorted"
 
+for subdir in $hapkey_d $hapcnt_d $log_likelihood_d $log_posterior_d ; do 
+	if [ ! -d $subdir ] ; then mkdir -p $subdir ; fi
+done
+
 # results file
 pgen_out="../../private_data/output/$(basename ${hap_f%.hap})-$(basename ${pgen_f%.pgen}).pgen"

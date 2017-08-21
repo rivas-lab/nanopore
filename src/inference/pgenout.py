@@ -40,7 +40,7 @@ logging_config = dict(
         },
     root = {
         'handlers': ['h'],
-        'level': logging.INFO,
+        'level': logging.DEBUG,
         },
 )
 dictConfig(logging_config)
@@ -51,7 +51,12 @@ def argmax2(ary):
 
 
 def find_hap_index_block(log_posterior_block, homo_threshold_log = np.log(0.9)):
+    logger_find_hap_index_block = logging.getLogger('find_hap_index_block')
+
     top2 = argmax2(log_posterior_block)
+
+    logger_find_hap_index_block.debug([np.exp(x) for x in log_posterior_block[top2]])
+
     if(log_posterior_block[top2[0]] >= homo_threshold_log):
         return np.array([top2[0]] * 2)
     else:
